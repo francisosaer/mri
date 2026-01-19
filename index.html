@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patiëntenformulier</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+<h2>Patiëntenformulier</h2>
+
+<form action="https://formspree.io/f/XXXXX" method="POST">
+
+  <label>Naam</label>
+  <input type="text" name="Naam" required>
+
+  <label>Voornaam</label>
+  <input type="text" name="Voornaam" required>
+
+  <label>Prothese in lichaam</label>
+  <input type="radio" name="Prothese" value="Ja" required> Ja
+  <input type="radio" name="Prothese" value="Nee"> Nee
+
+  <label>PM</label>
+  <input type="radio" name="PM" value="Ja" required> Ja
+  <input type="radio" name="PM" value="Nee"> Nee
+
+  <label>Pijnpomp</label>
+  <input type="radio" name="Pijnpomp" value="Ja" required> Ja
+  <input type="radio" name="Pijnpomp" value="Nee"> Nee
+
+  <label>Metaalsplinters in oog</label>
+  <input type="radio" name="Metaalsplinters_oog" value="Ja" required> Ja
+  <input type="radio" name="Metaalsplinters_oog" value="Nee"> Nee
+
+  <label>Zwanger</label>
+  <input type="radio" name="Zwanger" value="Ja" required> Ja
+  <input type="radio" name="Zwanger" value="Nee"> Nee
+
+  <button type="submit">Verzenden</button>
+</form>
+
+</body>
+</html>
