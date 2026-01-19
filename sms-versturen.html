@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SMS versturen</title>
+<title>SMS formulier versturen</title>
 
 <style>
 body {
@@ -40,7 +40,7 @@ button {
 
 <h1>SMS formulier versturen</h1>
 
-<label>Telefoonnummer patiënt</label>
+<label>Telefoonnummer patiÃ«nt</label>
 <input type="tel" id="phone" value="04" inputmode="numeric">
 
 <button onclick="verstuurSMS()">Verstuur SMS</button>
@@ -49,20 +49,17 @@ button {
 function verstuurSMS() {
   let phone = document.getElementById("phone").value.trim();
 
+  // Controleer Belgisch gsm-nummer
   if (!phone.startsWith("04") || phone.length < 9) {
     alert("Vul een geldig Belgisch gsm-nummer in");
     return;
   }
 
-  // Belgisch nummer omzetten
+  // Zet om naar internationaal formaat
   phone = "+32" + phone.substring(1);
 
-  // Link naar HET formulier
-  const base =
-    window.location.origin +
-    window.location.pathname.replace("sms-versturen.html", "");
-
-  const url = base + "index.html";
+  // Link naar het formulier (index.html)
+  const url = "https://francisosaer.github.io/mri/";
 
   // SMS openen
   const smsLink =
@@ -71,6 +68,7 @@ function verstuurSMS() {
       "Gelieve dit formulier in te vullen:\n" + url
     );
 
+  // Open de SMS-app met de tekst
   window.location.href = smsLink;
 }
 </script>
