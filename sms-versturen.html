@@ -49,29 +49,27 @@ button {
 function verstuurSMS() {
   let phone = document.getElementById("phone").value.trim();
 
-  // Controleer Belgisch gsm-nummer
   if (!phone.startsWith("04") || phone.length < 9) {
     alert("Vul een geldig Belgisch gsm-nummer in");
     return;
   }
 
-  // Zet om naar internationaal formaat
+  // Belgisch nummer omzetten
   phone = "+32" + phone.substring(1);
 
-  // Link naar het formulier (index.html)
+  // Vaste URL naar je index.html (absoluut)
   const url = "https://francisosaer.github.io/mri/";
 
-  // SMS openen
-  const smsLink =
-    `sms:${phone}?body=` +
-    encodeURIComponent(
-      "Gelieve dit formulier in te vullen:\n" + url
-    );
+  // SMS-link
+  const smsLink = `sms:${phone}?body=` + 
+                  encodeURIComponent("Gelieve dit formulier in te vullen:\n" + url);
 
-  // Open de SMS-app met de tekst
+  // Open SMS-app
   window.location.href = smsLink;
 }
+
 </script>
 
 </body>
 </html>
+
