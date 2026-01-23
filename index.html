@@ -1,114 +1,117 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MRI vragenlijst</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRI Veiligheidsvragenlijst</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 520px;
-      margin: auto;
-      padding: 20px;
-      background: #f9f9f9;
-    }
-    h2 {
-      text-align: center;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 18px;
-    }
-    .options {
-      margin-top: 5px;
-    }
-    .options label {
-      font-weight: normal;
-      margin-right: 20px;
-    }
-    button {
-      margin-top: 25px;
-      width: 100%;
-      padding: 15px;
-      font-size: 17px;
-      background-color: #2c7be5;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-    button:hover {
-      background-color: #1a5dcc;
-    }
-    .consent {
-      margin-top: 20px;
-      font-size: 14px;
-    }
-  </style>
+h1 {
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+select, input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  font-size: 16px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px;
+  font-size: 18px;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* Rood alert voor kritieke antwoorden in mail */
+.red-alert {
+  color: red;
+  font-weight: bold;
+}
+</style>
 </head>
 
 <body>
 
-<h2>MRI vragenlijst</h2>
+<h1>MRI Veiligheidsvragenlijst</h1>
 
-<form action="https://formspree.io/f/mdaaznay" method="POST">
-
-  <!-- 🔐 Anti-spam honeypot -->
-  <input type="text" name="_gotcha" style="display:none">
-
-  <!-- 📧 Dynamisch e-mail onderwerp -->
-  <input type="hidden" name="_subject" value="MRI vragenlijst - {{Voornaam}} {{Naam}}">
-
-  <!-- 👤 Identiteit -->
-  <label>Voornaam</label>
-  <input type="text" name="Voornaam" required>
-
+<form action="https://formspree.io/f/your-form-id" method="POST" id="mriForm">
   <label>Naam</label>
   <input type="text" name="Naam" required>
 
-  <!-- ❓ Vragen -->
+  <label>Voornaam</label>
+  <input type="text" name="Voornaam" required>
+
   <label>Prothese in lichaam</label>
-  <div class="options">
-    <label><input type="radio" name="Prothese" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Prothese" value="Nee"> Nee</label>
-  </div>
+  <select name="Prothese" id="prothese" required>
+    <option value="">Kies...</option>
+    <option value="Ja">Ja</option>
+    <option value="Nee">Nee</option>
+  </select>
 
   <label>PM</label>
-  <div class="options">
-    <label><input type="radio" name="PM" value="Ja" required> Ja</label>
-    <label><input type="radio" name="PM" value="Nee"> Nee</label>
-  </div>
+  <select name="PM" id="pm" required>
+    <option value="">Kies...</option>
+    <option value="Ja">Ja</option>
+    <option value="Nee">Nee</option>
+  </select>
 
   <label>Pijnpomp</label>
-  <div class="options">
-    <label><input type="radio" name="Pijnpomp" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Pijnpomp" value="Nee"> Nee</label>
-  </div>
+  <select name="Pijnpomp" id="pijnpomp" required>
+    <option value="">Kies...</option>
+    <option value="Ja">Ja</option>
+    <option value="Nee">Nee</option>
+  </select>
 
   <label>Metaalsplinters in oog</label>
-  <div class="options">
-    <label><input type="radio" name="Metaalsplinters_oog" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Metaalsplinters_oog" value="Nee"> Nee</label>
-  </div>
+  <select name="Metaalsplinters" id="metaal" required>
+    <option value="">Kies...</option>
+    <option value="Ja">Ja</option>
+    <option value="Nee">Nee</option>
+  </select>
 
   <label>Zwanger</label>
-  <div class="options">
-    <label><input type="radio" name="Zwanger" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Zwanger" value="Nee"> Nee</label>
-  </div>
+  <select name="Zwanger" id="zwanger" required>
+    <option value="">Kies...</option>
+    <option value="Ja">Ja</option>
+    <option value="Nee">Nee</option>
+  </select>
 
-  <!-- ✅ Toestemming -->
-  <div class="consent">
-    <label>
-      <input type="checkbox" name="Toestemming" required>
-      Ik geef toestemming om deze gegevens te verzenden voor medische doeleinden.
-    </label>
-  </div>
+  <!-- Verborgen velden voor alert -->
+  <input type="hidden" name="PM_Alert" id="pm_alert">
+  <input type="hidden" name="Pijnpomp_Alert" id="pijn_alert">
+  <input type="hidden" name="Metaal_Alert" id="metaal_alert">
 
   <button type="submit">Verzenden</button>
-
 </form>
+
+<script>
+// Bij submit: check kritieke antwoorden en zet rood voor e-mail
+document.getElementById("mriForm").addEventListener("submit", function(e) {
+  const pm = document.getElementById("pm").value;
+  const pijn = document.getElementById("pijnpomp").value;
+  const metaal = document.getElementById("metaal").value;
+
+  // Rood alert via HTML span
+  document.getElementById("pm_alert").value = pm === "Ja" ? "<span class='red-alert'>Ja</span>" : "Nee";
+  document.getElementById("pijn_alert").value = pijn === "Ja" ? "<span class='red-alert'>Ja</span>" : "Nee";
+  document.getElementById("metaal_alert").value = metaal === "Ja" ? "<span class='red-alert'>Ja</span>" : "Nee";
+});
+</script>
 
 </body>
 </html>
