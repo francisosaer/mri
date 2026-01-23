@@ -36,6 +36,12 @@ button {
   width: 100%;
   cursor: pointer;
 }
+
+/* Rood alert voor kritieke antwoorden in mail */
+.red-alert {
+  color: red;
+  font-weight: bold;
+}
 </style>
 </head>
 
@@ -43,7 +49,7 @@ button {
 
 <h1>MRI Veiligheidsvragenlijst</h1>
 
-<form action="https://formspree.io/f/mdaaznay" method="POST" id="mriForm">
+<form action="https://formspree.io/f/your-form-id" method="POST" id="mriForm">
   <label>Naam</label>
   <input type="text" name="Naam" required>
 
@@ -51,7 +57,7 @@ button {
   <input type="text" name="Voornaam" required>
 
   <label>Prothese in lichaam</label>
-  <select name="Prothese" required>
+  <select name="Prothese" id="prothese" required>
     <option value="">Kies...</option>
     <option value="Ja">Ja</option>
     <option value="Nee">Nee</option>
@@ -60,33 +66,52 @@ button {
   <label>PM</label>
   <select name="PM" id="pm" required>
     <option value="">Kies...</option>
-    <option value="Ja">Ja !!!</option>
+    <option value="Ja">Ja</option>
     <option value="Nee">Nee</option>
   </select>
 
   <label>Pijnpomp</label>
   <select name="Pijnpomp" id="pijnpomp" required>
     <option value="">Kies...</option>
-    <option value="Ja">Ja !!!</option>
+    <option value="Ja">Ja</option>
     <option value="Nee">Nee</option>
   </select>
 
   <label>Metaalsplinters in oog</label>
   <select name="Metaalsplinters" id="metaal" required>
     <option value="">Kies...</option>
-    <option value="Ja">Ja !!!</option>
+    <option value="Ja">Ja</option>
     <option value="Nee">Nee</option>
   </select>
 
   <label>Zwanger</label>
-  <select name="Zwanger" required>
+  <select name="Zwanger" id="zwanger" required>
     <option value="">Kies...</option>
     <option value="Ja">Ja</option>
     <option value="Nee">Nee</option>
   </select>
 
+  <!-- Verborgen velden voor alert -->
+  <input type="hidden" name="PM_Alert" id="pm_alert">
+  <input type="hidden" name="Pijnpomp_Alert" id="pijn_alert">
+  <input type="hidden" name="Metaal_Alert" id="metaal_alert">
+
   <button type="submit">Verzenden</button>
 </form>
+
+<script>
+// Bij submit: check kritieke antwoorden en zet rood voor e-mail
+document.getElementById("mriForm").addEventListener("submit", function(e) {
+  const pm = document.getElementById("pm").value;
+  const pijn = document.getElementById("pijnpomp").value;
+  const metaal = document.getElementById("metaal").value;
+
+  // Rood alert via HTML span
+  document.getElementById("pm_alert").value = pm === "Ja" ? "<span class='red-alert'>Ja</span>" : "Nee";
+  document.getElementById("pijn_alert").value = pijn === "Ja" ? "<span class='red-alert'>Ja</span>" : "Nee";
+  document.getElementById("metaal_alert").value = metaal === "Ja" ? "<span class='red-alert'>Ja</span>" : "Nee";
+});
+</script>
 
 </body>
 </html>
