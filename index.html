@@ -41,6 +41,9 @@ button {
 
 <form action="https://formspree.io/f/mdaaznay" method="POST" id="mriForm">
 
+  <!-- Verborgen veld voor dynamisch onderwerp -->
+  <input type="hidden" name="_subject" id="subject">
+
   <label>Naam</label>
   <input type="text" name="Naam" required>
 
@@ -71,17 +74,23 @@ button {
 </form>
 
 <script>
-// Zet kritieke velden bij "Ja" om naar vet (opvallend) in e-mail
+// Bij submit: dynamisch onderwerp + JA markering
 document.getElementById("mriForm").addEventListener("submit", function(e){
+    const naam = document.querySelector("input[name='Naam']").value;
+    const voornaam = document.querySelector("input[name='Voornaam']").value;
+
+    // Dynamisch mailonderwerp
+    document.getElementById("subject").value = `MRI vragenlijst – ${voornaam} ${naam}`;
+
+    // Vetgedrukt JA voor kritieke velden
     const pmRadios = document.getElementsByName("PM");
     const pijnRadios = document.getElementsByName("Pijnpomp");
     const metaRadios = document.getElementsByName("Metaalsplinters");
 
-    // Helper functie: Ja → JA
     function markJa(radios){
         for(let r of radios){
             if(r.checked && r.value === "Ja"){
-                r.value = "JA"; // wordt vetgedrukt door mail-client conventie
+                r.value = "JA"; // valt op in e-mail
             }
         }
     }
@@ -94,4 +103,3 @@ document.getElementById("mriForm").addEventListener("submit", function(e){
 
 </body>
 </html>
-
