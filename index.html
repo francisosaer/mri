@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MRI Veiligheidsvragenlijst</title>
+
 <style>
 body {
   font-family: Arial, sans-serif;
@@ -22,16 +23,15 @@ label {
   font-size: 16px;
 }
 
-input[type="text"], input[type="tel"], input[type="email"] {
+.options label {
+  display: block;
+  margin-top: 6px;
+}
+
+input[type="text"] {
   width: 100%;
   padding: 8px;
   font-size: 16px;
-}
-
-.options label {
-  display: block;
-  margin-top: 8px;
-  cursor: pointer;
 }
 
 button {
@@ -48,11 +48,12 @@ button {
 }
 </style>
 </head>
+
 <body>
 
 <h1>MRI Veiligheidsvragenlijst</h1>
 
-<form action="https://formspree.io/f/mdaaznay" method="POST">
+<form action="https://formspree.io/f/mdaaznay" method="POST" id="mriForm">
 
 <label>Voornaam</label>
 <input type="text" name="Voornaam" required>
@@ -93,25 +94,22 @@ button {
 <div class="toestemming">
   <label>
     <input type="checkbox" name="Toestemming" required>
-    Ik geef toestemming dat mijn gegevens gebruikt worden voor medische doeleinden en verwerking volgens de GDPR/AVG.
+    Ik geef toestemming dat mijn gegevens gebruikt worden voor medische doeleinden en volgens de GDPR/AVG.
   </label>
 </div>
 
 <button type="submit">Verzenden</button>
+
 </form>
 
 <script>
-// Script om kritieke JA-antwoorden te markeren met ⚠️
-const form = document.querySelector("form");
+document.getElementById("mriForm").addEventListener("submit", function () {
+  const kritischeVelden = ["PM", "Pijnpomp", "Metaal"];
 
-form.addEventListener("submit", function() {
-  const kritiekeVragen = ["PM", "Pijnpomp", "Metaal"];
-  
-  kritiekeVragen.forEach(vraag => {
-    const field = form.elements[vraag];
-    if(field.value === "Ja") {
-      // Overschrijven van de waarde zodat JA ⚠️ in de mail komt
-      field.value = "JA ⚠️";
+  kritischeVelden.forEach(naam => {
+    const gekozen = this.querySelector(`input[name="${naam}"]:checked`);
+    if (gekozen && gekozen.value === "Ja") {
+      gekozen.value = "JA";
     }
   });
 });
