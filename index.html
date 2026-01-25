@@ -7,7 +7,7 @@
 <style>
 body {
   font-family: Arial, sans-serif;
-  max-width: 600px;
+  max-width: 480px;
   margin: auto;
   padding: 20px;
 }
@@ -19,19 +19,38 @@ h1 {
 label {
   display: block;
   margin-top: 15px;
-  font-weight: bold;
+  font-size: 16px;
 }
 
-input[type="radio"] {
-  margin-right: 8px;
+input[type="text"], input[type="tel"], input[type="email"] {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.options label {
+  display: block;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.alert {
+  color: red;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 button {
   margin-top: 20px;
-  padding: 12px;
-  font-size: 18px;
   width: 100%;
+  padding: 12px;
+  font-size: 16px;
   cursor: pointer;
+}
+
+.toestemming {
+  margin-top: 20px;
+  font-size: 14px;
 }
 </style>
 </head>
@@ -39,67 +58,53 @@ button {
 
 <h1>MRI Veiligheidsvragenlijst</h1>
 
-<form action="https://formspree.io/f/mdaaznay" method="POST" id="mriForm">
+<form action="https://formspree.io/f/mdaaznay" method="POST">
 
-  <!-- Verborgen veld voor dynamisch onderwerp -->
-  <input type="hidden" name="_subject" id="subject">
+<label>Voornaam</label>
+<input type="text" name="Voornaam" required>
 
-  <label>Naam</label>
-  <input type="text" name="Naam" required>
+<label>Naam</label>
+<input type="text" name="Naam" required>
 
-  <label>Voornaam</label>
-  <input type="text" name="Voornaam" required>
+<label>Prothese in lichaam</label>
+<div class="options">
+  <label><input type="radio" name="Prothese" value="Ja" required> Ja</label>
+  <label><input type="radio" name="Prothese" value="Nee"> Nee</label>
+</div>
 
-  <label>Prothese in lichaam</label>
-  <input type="radio" name="Prothese" value="Ja" required> Ja
-  <input type="radio" name="Prothese" value="Nee"> Nee
+<label>PM</label>
+<div class="options">
+  <label><input type="radio" name="PM" value="Ja" required> <span class="alert">Ja</span></label>
+  <label><input type="radio" name="PM" value="Nee"> Nee</label>
+</div>
 
-  <label>PM</label>
-  <input type="radio" name="PM" value="Ja" required> Ja
-  <input type="radio" name="PM" value="Nee"> Nee
+<label>Pijnpomp</label>
+<div class="options">
+  <label><input type="radio" name="Pijnpomp" value="Ja" required> <span class="alert">Ja</span></label>
+  <label><input type="radio" name="Pijnpomp" value="Nee"> Nee</label>
+</div>
 
-  <label>Pijnpomp</label>
-  <input type="radio" name="Pijnpomp" value="Ja" required> Ja
-  <input type="radio" name="Pijnpomp" value="Nee"> Nee
+<label>Metaalsplinters in oog</label>
+<div class="options">
+  <label><input type="radio" name="Metaal" value="Ja" required> <span class="alert">Ja</span></label>
+  <label><input type="radio" name="Metaal" value="Nee"> Nee</label>
+</div>
 
-  <label>Metaalsplinters in oog</label>
-  <input type="radio" name="Metaalsplinters" value="Ja" required> Ja
-  <input type="radio" name="Metaalsplinters" value="Nee"> Nee
+<label>Zwanger</label>
+<div class="options">
+  <label><input type="radio" name="Zwanger" value="Ja" required> Ja</label>
+  <label><input type="radio" name="Zwanger" value="Nee"> Nee</label>
+</div>
 
-  <label>Zwanger</label>
-  <input type="radio" name="Zwanger" value="Ja" required> Ja
-  <input type="radio" name="Zwanger" value="Nee"> Nee
+<div class="toestemming">
+  <label>
+    <input type="checkbox" name="Toestemming" required>
+    Ik geef toestemming dat mijn gegevens gebruikt worden voor medische doeleinden en verwerking volgens de GDPR/AVG.
+  </label>
+</div>
 
-  <button type="submit">Verzenden</button>
+<button type="submit">Verzenden</button>
 </form>
-
-<script>
-// Bij submit: dynamisch onderwerp + JA markering
-document.getElementById("mriForm").addEventListener("submit", function(e){
-    const naam = document.querySelector("input[name='Naam']").value;
-    const voornaam = document.querySelector("input[name='Voornaam']").value;
-
-    // Dynamisch mailonderwerp
-    document.getElementById("subject").value = `MRI vragenlijst – ${voornaam} ${naam}`;
-
-    // Vetgedrukt JA voor kritieke velden
-    const pmRadios = document.getElementsByName("PM");
-    const pijnRadios = document.getElementsByName("Pijnpomp");
-    const metaRadios = document.getElementsByName("Metaalsplinters");
-
-    function markJa(radios){
-        for(let r of radios){
-            if(r.checked && r.value === "Ja"){
-                r.value = "JA"; // valt op in e-mail
-            }
-        }
-    }
-
-    markJa(pmRadios);
-    markJa(pijnRadios);
-    markJa(metaRadios);
-});
-</script>
 
 </body>
 </html>
