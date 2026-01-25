@@ -34,12 +34,6 @@ input[type="text"], input[type="tel"], input[type="email"] {
   cursor: pointer;
 }
 
-.alert {
-  color: red;
-  font-weight: bold;
-  font-size: 18px;
-}
-
 button {
   margin-top: 20px;
   width: 100%;
@@ -74,19 +68,19 @@ button {
 
 <label>PM</label>
 <div class="options">
-  <label><input type="radio" name="PM" value="Ja" required> <span class="alert">Ja</span></label>
+  <label><input type="radio" name="PM" value="Ja" required> Ja</label>
   <label><input type="radio" name="PM" value="Nee"> Nee</label>
 </div>
 
 <label>Pijnpomp</label>
 <div class="options">
-  <label><input type="radio" name="Pijnpomp" value="Ja" required> <span class="alert">Ja</span></label>
+  <label><input type="radio" name="Pijnpomp" value="Ja" required> Ja</label>
   <label><input type="radio" name="Pijnpomp" value="Nee"> Nee</label>
 </div>
 
 <label>Metaalsplinters in oog</label>
 <div class="options">
-  <label><input type="radio" name="Metaal" value="Ja" required> <span class="alert">Ja</span></label>
+  <label><input type="radio" name="Metaal" value="Ja" required> Ja</label>
   <label><input type="radio" name="Metaal" value="Nee"> Nee</label>
 </div>
 
@@ -103,8 +97,29 @@ button {
   </label>
 </div>
 
+<!-- Hidden fields voor alerts -->
+<input type="hidden" name="PM_alert" value="">
+<input type="hidden" name="Pijnpomp_alert" value="">
+<input type="hidden" name="Metaal_alert" value="">
+
 <button type="submit">Verzenden</button>
 </form>
+
+<script>
+// Script om kritieke JA-antwoorden om te zetten naar alert-tekst
+const form = document.querySelector("form");
+
+form.addEventListener("submit", function() {
+  const pm = form.elements["PM"].value;
+  const pijnpomp = form.elements["Pijnpomp"].value;
+  const metaal = form.elements["Metaal"].value;
+
+  // Alleen JA wordt gemarkeerd met ⚠️
+  form.elements["PM_alert"].value = (pm === "Ja") ? "⚠️ PM: JA" : "PM: NEE";
+  form.elements["Pijnpomp_alert"].value = (pijnpomp === "Ja") ? "⚠️ PIJNPOMP: JA" : "Pijnpomp: NEE";
+  form.elements["Metaal_alert"].value = (metaal === "Ja") ? "⚠️ METAAL: JA" : "Metaal: NEE";
+});
+</script>
 
 </body>
 </html>
