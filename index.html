@@ -97,27 +97,23 @@ button {
   </label>
 </div>
 
-<!-- Hidden fields voor alerts -->
-<input type="hidden" name="PM_alert" value="">
-<input type="hidden" name="Pijnpomp_alert" value="">
-<input type="hidden" name="Metaal_alert" value="">
-
 <button type="submit">Verzenden</button>
 </form>
 
 <script>
-// Script om kritieke JA-antwoorden om te zetten naar alert-tekst
+// Script om kritieke JA-antwoorden te markeren met ⚠️
 const form = document.querySelector("form");
 
 form.addEventListener("submit", function() {
-  const pm = form.elements["PM"].value;
-  const pijnpomp = form.elements["Pijnpomp"].value;
-  const metaal = form.elements["Metaal"].value;
-
-  // Alleen JA wordt gemarkeerd met ⚠️
-  form.elements["PM_alert"].value = (pm === "Ja") ? "⚠️ PM: JA" : "PM: NEE";
-  form.elements["Pijnpomp_alert"].value = (pijnpomp === "Ja") ? "⚠️ PIJNPOMP: JA" : "Pijnpomp: NEE";
-  form.elements["Metaal_alert"].value = (metaal === "Ja") ? "⚠️ METAAL: JA" : "Metaal: NEE";
+  const kritiekeVragen = ["PM", "Pijnpomp", "Metaal"];
+  
+  kritiekeVragen.forEach(vraag => {
+    const field = form.elements[vraag];
+    if(field.value === "Ja") {
+      // Overschrijven van de waarde zodat JA ⚠️ in de mail komt
+      field.value = "JA ⚠️";
+    }
+  });
 });
 </script>
 
