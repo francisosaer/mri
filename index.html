@@ -53,7 +53,14 @@ button {
 
 <h1>MRI Veiligheidsvragenlijst</h1>
 
-<form action="https://formspree.io/f/mdaaznay" method="POST" id="mriForm">
+<form
+  action="https://formspree.io/f/mdaaznay"
+  method="POST"
+  id="mriForm"
+>
+
+<!-- Mail onderwerp -->
+<input type="hidden" name="_subject" id="emailSubject">
 
 <label>Voornaam</label>
 <input type="text" name="Voornaam" required>
@@ -94,7 +101,8 @@ button {
 <div class="toestemming">
   <label>
     <input type="checkbox" name="Toestemming" required>
-    Ik geef toestemming dat mijn gegevens gebruikt worden voor medische doeleinden en volgens de GDPR/AVG.
+    Ik geef toestemming dat mijn gegevens gebruikt worden voor medische doeleinden
+    en verwerkt worden volgens de GDPR/AVG.
   </label>
 </div>
 
@@ -104,14 +112,23 @@ button {
 
 <script>
 document.getElementById("mriForm").addEventListener("submit", function () {
+
+  // Kritieke JA in hoofdletters
   const kritischeVelden = ["PM", "Pijnpomp", "Metaal"];
 
-  kritischeVelden.forEach(naam => {
-    const gekozen = this.querySelector(`input[name="${naam}"]:checked`);
-    if (gekozen && gekozen.value === "Ja") {
-      gekozen.value = "JA";
+  kritischeVelden.forEach(veld => {
+    const keuze = this.querySelector(`input[name="${veld}"]:checked`);
+    if (keuze && keuze.value === "Ja") {
+      keuze.value = "JA";
     }
   });
+
+  // Mail onderwerp instellen
+  const voornaam = this.elements["Voornaam"].value;
+  const naam = this.elements["Naam"].value;
+
+  this.elements["_subject"].value =
+    "MRI vragenlijst – " + voornaam + " " + naam;
 });
 </script>
 
