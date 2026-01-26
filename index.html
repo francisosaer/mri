@@ -71,7 +71,7 @@ button {
 
 <body>
 
-<form action="https://formspree.io/f/mdaaznay" method="POST" id="mriForm">
+<form action="https://formspree.io/f/XXXXXXXX" method="POST" id="mriForm">
   <!-- Vervang XXXXXXXX door je eigen Formspree ID -->
 
   <h1>MRI vragenlijst</h1>
@@ -86,36 +86,36 @@ button {
   <!-- Prothese -->
   <div class="question">Prothese in het lichaam</div>
   <div class="options">
-    <label><input type="radio" name="Prothese" value="Ja" required> JA</label>
-    <label><input type="radio" name="Prothese" value="Nee"> NEE</label>
+    <label><input type="radio" name="Prothese" value="Ja" required> Ja</label>
+    <label><input type="radio" name="Prothese" value="Nee"> Nee</label>
   </div>
 
   <!-- PM -->
   <div class="question">PM (pacemaker)</div>
   <div class="options">
-    <label><input type="radio" name="PM" value="Ja" required> JA</label>
-    <label><input type="radio" name="PM" value="Nee"> NEE</label>
+    <label><input type="radio" name="PM" value="Ja" required> Ja</label>
+    <label><input type="radio" name="PM" value="Nee"> Nee</label>
   </div>
 
   <!-- Pijnpomp -->
   <div class="question">Pijnpomp</div>
   <div class="options">
-    <label><input type="radio" name="Pijnpomp" value="Ja" required> JA</label>
-    <label><input type="radio" name="Pijnpomp" value="Nee"> NEE</label>
+    <label><input type="radio" name="Pijnpomp" value="Ja" required> Ja</label>
+    <label><input type="radio" name="Pijnpomp" value="Nee"> Nee</label>
   </div>
 
   <!-- Metaal -->
   <div class="question">Metaalsplinters in oog</div>
   <div class="options">
-    <label><input type="radio" name="Metaal" value="Ja" required> JA</label>
-    <label><input type="radio" name="Metaal" value="Nee"> NEE</label>
+    <label><input type="radio" name="Metaal" value="Ja" required> Ja</label>
+    <label><input type="radio" name="Metaal" value="Nee"> Nee</label>
   </div>
 
   <!-- Zwanger -->
   <div class="question">Zwanger</div>
   <div class="options">
-    <label><input type="radio" name="Zwanger" value="Ja" required> JA</label>
-    <label><input type="radio" name="Zwanger" value="Nee"> NEE</label>
+    <label><input type="radio" name="Zwanger" value="Ja" required> Ja</label>
+    <label><input type="radio" name="Zwanger" value="Nee"> Nee</label>
   </div>
 
   <!-- Toestemming / verklaring -->
@@ -135,24 +135,19 @@ button {
 </form>
 
 <script>
-document.getElementById("mriForm").addEventListener("submit", function (e) {
+document.getElementById("mriForm").addEventListener("submit", function () {
 
-  // Zet kritieke velden in hoofdletters en vet in mail
+  // Zet kritieke velden in HOOFDLETTERS voor mail
   const kritiekeVelden = ["PM", "Pijnpomp", "Metaal"];
 
   kritiekeVelden.forEach(veld => {
     const keuze = this.querySelector(`input[name="${veld}"]:checked`);
-    if (keuze) {
-      if (keuze.value === "Ja") {
-        // hoofdletters + vet voor mail
-        keuze.value = "<strong>JA</strong>";
-      } else {
-        keuze.value = "Nee";
-      }
+    if (keuze && keuze.value.toLowerCase() === "ja") {
+      keuze.value = "JA"; // gewoon hoofdletters, geen HTML
     }
   });
 
-  // Onderwerp mail
+  // Mail-onderwerp automatisch instellen
   const voornaam = this.elements["voornaam"].value;
   const naam = this.elements["naam"].value;
 
