@@ -71,8 +71,8 @@ button {
 
 <body>
 
-<form action="https://formspree.io/f/XXXXXXXX" method="POST" id="mriForm">
-  <!-- Vervang XXXXXXXX door je eigen Formspree ID -->
+<form action="https://formspree.io/f/mdaaznay" method="POST" id="mriForm">
+  <!-- Vervang XXXXXXXX door je Formspree ID -->
 
   <h1>MRI vragenlijst</h1>
 
@@ -137,13 +137,12 @@ button {
 <script>
 document.getElementById("mriForm").addEventListener("submit", function () {
 
-  // Zet kritieke velden in HOOFDLETTERS voor mail
+  // Zet kritieke velden in hoofdletters voor mail
   const kritiekeVelden = ["PM", "Pijnpomp", "Metaal"];
-
   kritiekeVelden.forEach(veld => {
     const keuze = this.querySelector(`input[name="${veld}"]:checked`);
     if (keuze && keuze.value.toLowerCase() === "ja") {
-      keuze.value = "JA"; // gewoon hoofdletters, geen HTML
+      keuze.value = "JA"; // GEEN HTML, alleen hoofdletters
     }
   });
 
@@ -153,7 +152,6 @@ document.getElementById("mriForm").addEventListener("submit", function () {
 
   this.elements["_subject"].value =
     "MRI vragenlijst – " + voornaam + " " + naam;
-
 });
 </script>
 
