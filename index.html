@@ -23,9 +23,18 @@ label {
   font-size: 16px;
 }
 
-.options label {
-  display: block;
+/* Radiobuttons naast elkaar */
+.options {
+  display: flex;
+  gap: 25px;
   margin-top: 6px;
+}
+
+.options label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
 }
 
 input[type="text"] {
@@ -59,7 +68,6 @@ button {
   id="mriForm"
 >
 
-<!-- Mail onderwerp -->
 <input type="hidden" name="_subject" id="emailSubject">
 
 <label>Voornaam</label>
@@ -123,7 +131,7 @@ document.getElementById("mriForm").addEventListener("submit", function () {
     }
   });
 
-  // Mail onderwerp instellen
+  // Mail onderwerp
   const voornaam = this.elements["Voornaam"].value;
   const naam = this.elements["Naam"].value;
 
