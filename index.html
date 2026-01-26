@@ -3,142 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MRI Veiligheidsvragenlijst</title>
+<title>MRI vragenlijst</title>
 
 <style>
 body {
   font-family: Arial, sans-serif;
-  max-width: 480px;
-  margin: auto;
+  background: #f7f7f7;
   padding: 20px;
+}
+
+form {
+  max-width: 600px;
+  margin: auto;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 10px;
 }
 
 h1 {
   text-align: center;
+  margin-bottom: 20px;
 }
 
 label {
   display: block;
   margin-top: 15px;
-  font-size: 16px;
 }
 
-/* Radiobuttons naast elkaar */
+input[type="text"],
+input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.question {
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 25px;
+  margin-bottom: 8px;
+}
+
 .options {
   display: flex;
-  gap: 25px;
-  margin-top: 6px;
+  gap: 30px;
+  margin-bottom: 10px;
 }
 
 .options label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
+  font-weight: normal;
 }
 
-input[type="text"] {
-  width: 100%;
-  padding: 8px;
-  font-size: 16px;
+.consent {
+  margin-top: 25px;
+  font-size: 14px;
 }
 
 button {
-  margin-top: 20px;
+  margin-top: 25px;
   width: 100%;
   padding: 12px;
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
-}
-
-.toestemming {
-  margin-top: 20px;
-  font-size: 14px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>MRI Veiligheidsvragenlijst</h1>
+<form action="https://formspree.io/f/XXXXXXXX" method="POST">
+  <!-- 🔁 VERVANG XXXXXXXX door je echte Formspree ID -->
 
-<form
-  action="https://formspree.io/f/mdaaznay"
-  method="POST"
-  id="mriForm"
->
+  <h1>MRI vragenlijst</h1>
 
-<input type="hidden" name="_subject" id="emailSubject">
+  <label>Voornaam</label>
+  <input type="text" name="voornaam" required>
 
-<label>Voornaam</label>
-<input type="text" name="Voornaam" required>
+  <label>Naam</label>
+  <input type="text" name="naam" required>
 
-<label>Naam</label>
-<input type="text" name="Naam" required>
+  <label>Geboortedatum</label>
+  <input type="date" name="geboortedatum" required>
 
-<label>Prothese in lichaam</label>
-<div class="options">
-  <label><input type="radio" name="Prothese" value="Ja" required> Ja</label>
-  <label><input type="radio" name="Prothese" value="Nee"> Nee</label>
-</div>
+  <!-- PM -->
+  <div class="question">PM (pacemaker)</div>
+  <div class="options">
+    <label><input type="radio" name="PM" value="JA" required> JA</label>
+    <label><input type="radio" name="PM" value="NEE"> NEE</label>
+  </div>
 
-<label>PM</label>
-<div class="options">
-  <label><input type="radio" name="PM" value="Ja" required> Ja</label>
-  <label><input type="radio" name="PM" value="Nee"> Nee</label>
-</div>
+  <!-- Prothese -->
+  <div class="question">Prothese in het lichaam</div>
+  <div class="options">
+    <label><input type="radio" name="Prothese" value="JA" required> JA</label>
+    <label><input type="radio" name="Prothese" value="NEE"> NEE</label>
+  </div>
 
-<label>Pijnpomp</label>
-<div class="options">
-  <label><input type="radio" name="Pijnpomp" value="Ja" required> Ja</label>
-  <label><input type="radio" name="Pijnpomp" value="Nee"> Nee</label>
-</div>
+  <!-- Metaal -->
+  <div class="question">Metaal in het lichaam / oog</div>
+  <div class="options">
+    <label><input type="radio" name="Metaal" value="JA" required> JA</label>
+    <label><input type="radio" name="Metaal" value="NEE"> NEE</label>
+  </div>
 
-<label>Metaalsplinters in oog</label>
-<div class="options">
-  <label><input type="radio" name="Metaal" value="Ja" required> Ja</label>
-  <label><input type="radio" name="Metaal" value="Nee"> Nee</label>
-</div>
+  <!-- Pijnpomp -->
+  <div class="question">Pijnpomp</div>
+  <div class="options">
+    <label><input type="radio" name="Pijnpomp" value="JA" required> JA</label>
+    <label><input type="radio" name="Pijnpomp" value="NEE"> NEE</label>
+  </div>
 
-<label>Zwanger</label>
-<div class="options">
-  <label><input type="radio" name="Zwanger" value="Ja" required> Ja</label>
-  <label><input type="radio" name="Zwanger" value="Nee"> Nee</label>
-</div>
+  <!-- Zwanger -->
+  <div class="question">Zwanger</div>
+  <div class="options">
+    <label><input type="radio" name="Zwanger" value="JA" required> JA</label>
+    <label><input type="radio" name="Zwanger" value="NEE"> NEE</label>
+  </div>
 
-<div class="toestemming">
-  <label>
-    <input type="checkbox" name="Toestemming" required>
-    Ik geef toestemming dat mijn gegevens gebruikt worden voor medische doeleinden
-    en verwerkt worden volgens de GDPR/AVG.
-  </label>
-</div>
+  <!-- Toestemming -->
+  <div class="consent">
+    <label>
+      <input type="checkbox" name="toestemming" required>
+      Ik ga akkoord dat deze gegevens gebruikt worden voor medische doeleinden
+      in het kader van mijn MRI-onderzoek.
+    </label>
+  </div>
 
-<button type="submit">Verzenden</button>
+  <!-- Extra voor mail-onderwerp -->
+  <input type="hidden" name="_subject"
+         value="MRI vragenlijst van {{voornaam}} {{naam}}">
+
+  <button type="submit">Verzenden</button>
 
 </form>
-
-<script>
-document.getElementById("mriForm").addEventListener("submit", function () {
-
-  // Kritieke JA in hoofdletters
-  const kritischeVelden = ["PM", "Pijnpomp", "Metaal"];
-
-  kritischeVelden.forEach(veld => {
-    const keuze = this.querySelector(`input[name="${veld}"]:checked`);
-    if (keuze && keuze.value === "Ja") {
-      keuze.value = "JA";
-    }
-  });
-
-  // Mail onderwerp
-  const voornaam = this.elements["Voornaam"].value;
-  const naam = this.elements["Naam"].value;
-
-  this.elements["_subject"].value =
-    "MRI vragenlijst – " + voornaam + " " + naam;
-});
-</script>
 
 </body>
 </html>
