@@ -11,66 +11,34 @@ body {
   background: #f7f7f7;
   padding: 20px;
 }
-
 form {
   max-width: 600px;
   margin: auto;
-  background: #ffffff;
+  background: #fff;
   padding: 25px;
   border-radius: 10px;
 }
-
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-label {
-  display: block;
-  margin-top: 15px;
-}
-
+h1 { text-align: center; }
 .question {
   font-weight: bold;
   font-size: 18px;
   margin-top: 25px;
-  margin-bottom: 8px;
 }
-
 .options {
   display: flex;
   gap: 30px;
-  margin-bottom: 10px;
 }
-
-.options label {
-  font-weight: normal;
-}
-
-input[type="text"], select {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  margin-top: 5px;
-}
-
 button {
   margin-top: 25px;
   width: 100%;
   padding: 12px;
   font-size: 18px;
-  cursor: pointer;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
 }
-
 button:disabled {
-  cursor: not-allowed;
-}
-
-.consent {
-  margin-top: 25px;
-  font-size: 14px;
+  background: #ccc;
+  color: #666;
 }
 </style>
 </head>
@@ -78,182 +46,148 @@ button:disabled {
 <body>
 
 <form action="https://formspree.io/f/mdaaznay" method="POST" id="mriForm">
-  <h1>MRI vragenlijst</h1>
 
-  <!-- Taalkeuze -->
-  <label for="taal">Kies uw taal / Choisissez la langue / Choose your language</label>
-  <select id="taal" name="taal">
-    <option value="nl">Nederlands</option>
-    <option value="fr">Français</option>
-    <option value="en">English</option>
-  </select>
+<h1 id="title">MRI vragenlijst</h1>
 
-  <!-- Persoonsgegevens -->
-  <label for="voornaam">Voornaam</label>
-  <input type="text" name="voornaam" required>
+<!-- TAAL -->
+<label>
+<select id="lang">
+  <option value="nl">Nederlands</option>
+  <option value="fr">Français</option>
+  <option value="en">English</option>
+</select>
+</label>
 
-  <label for="naam">Naam</label>
-  <input type="text" name="naam" required>
+<!-- NAAM -->
+<label id="lblVoornaam">Voornaam</label>
+<input type="text" name="Voornaam" required>
 
-  <!-- Vragen -->
-  <div class="question">Heeft u een pacemaker of ingeplante hartdefibrillator?</div>
-  <div class="options">
-    <label><input type="radio" name="Heeft u een pacemaker of ingeplante hartdefibrillator?" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Heeft u een pacemaker of ingeplante hartdefibrillator?" value="Nee"> Nee</label>
-  </div>
+<label id="lblNaam">Naam</label>
+<input type="text" name="Naam" required>
 
-  <div class="question">Heeft u een neurostimulator/pijnpomp/insulinepomp?</div>
-  <div class="options">
-    <label><input type="radio" name="Heeft u een neurostimulator/pijnpomp/insulinepomp?" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Heeft u een neurostimulator/pijnpomp/insulinepomp?" value="Nee"> Nee</label>
-  </div>
+<!-- VRAGEN -->
+<div class="question" data-q="pacemaker"></div>
+<div class="options">
+  <label><input type="radio" name="Heeft u een pacemaker of ingeplante hartdefibrillator?" value="Ja" required> <span class="ja"></span></label>
+  <label><input type="radio" value="Nee"> <span class="nee"></span></label>
+</div>
 
-  <div class="question">Heeft u een binnenoorimplantaat/cochleair implantaat?</div>
-  <div class="options">
-    <label><input type="radio" name="Heeft u een binnenoorimplantaat/cochleair implantaat?" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Heeft u een binnenoorimplantaat/cochleair implantaat?" value="Nee"> Nee</label>
-  </div>
+<div class="question" data-q="neuro"></div>
+<div class="options">
+  <label><input type="radio" name="Heeft u een neurostimulator/pijnpomp/insulinepomp?" value="Ja" required> <span class="ja"></span></label>
+  <label><input type="radio" value="Nee"> <span class="nee"></span></label>
+</div>
 
-  <div class="question">Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?</div>
-  <div class="options">
-    <label><input type="radio" name="Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?" value="Nee"> Nee</label>
-  </div>
+<div class="question" data-q="cochlea"></div>
+<div class="options">
+  <label><input type="radio" name="Heeft u een binnenoorimplantaat/cochleair implantaat?" value="Ja" required> <span class="ja"></span></label>
+  <label><input type="radio" value="Nee"> <span class="nee"></span></label>
+</div>
 
-  <div class="question">Heeft u een hoorapparaat?</div>
-  <div class="options">
-    <label><input type="radio" name="Heeft u een hoorapparaat?" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Heeft u een hoorapparaat?" value="Nee"> Nee</label>
-  </div>
+<div class="question" data-q="metaal"></div>
+<div class="options">
+  <label><input type="radio" name="Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?" value="Ja" required> <span class="ja"></span></label>
+  <label><input type="radio" value="Nee"> <span class="nee"></span></label>
+</div>
 
-  <div class="question">Heeft u ooit een rugoperatie ondergaan?</div>
-  <div class="options">
-    <label><input type="radio" name="Heeft u ooit een rugoperatie ondergaan?" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Heeft u ooit een rugoperatie ondergaan?" value="Nee"> Nee</label>
-  </div>
+<div class="question" data-q="hoor"></div>
+<div class="options">
+  <label><input type="radio" name="Heeft u een hoorapparaat?" value="Ja" required> <span class="ja"></span></label>
+  <label><input type="radio" value="Nee"> <span class="nee"></span></label>
+</div>
 
-  <!-- Toestemming / verklaring -->
-  <div class="consent">
-    <label>
-      <input type="checkbox" name="toestemming" required>
-      Ik verklaar dat ik deze vragenlijst zelf en naar waarheid heb ingevuld
-      en ga akkoord met het gebruik van deze gegevens voor medische doeleinden.
-    </label>
-  </div>
+<div class="question" data-q="rug"></div>
+<div class="options">
+  <label><input type="radio" name="Heeft u ooit een rugoperatie ondergaan?" value="Ja" required> <span class="ja"></span></label>
+  <label><input type="radio" value="Nee"> <span class="nee"></span></label>
+</div>
 
-  <!-- Mail-onderwerp -->
-  <input type="hidden" name="_subject" id="emailSubject">
+<!-- VERKLARING -->
+<label>
+<input type="checkbox" name="Toestemming" required>
+<span id="consentText"></span>
+</label>
 
-  <button type="submit" id="submitBtn" disabled>Verzenden</button>
+<input type="hidden" name="_subject" id="subject">
+
+<button type="submit" id="submit" disabled></button>
+
 </form>
 
 <script>
-// Vertalingen voor formulier UI (mail blijft NL)
-const translations = {
-  nl: { 
-    Voornaam: "Voornaam", Naam: "Naam", Ja: "Ja", Nee: "Nee", 
-    Verzenden: "Verzenden",
-    Toestemming: "Ik verklaar dat ik deze vragenlijst zelf en naar waarheid heb ingevuld en ga akkoord met het gebruik van deze gegevens voor medische doeleinden."
+const T = {
+  nl: {
+    title: "MRI vragenlijst",
+    voornaam: "Voornaam",
+    naam: "Naam",
+    ja: "Ja",
+    nee: "Nee",
+    submit: "Verzenden",
+    consent: "Ik verklaar dat ik deze vragenlijst zelf en naar waarheid heb ingevuld en ga akkoord met het gebruik van deze gegevens voor medische doeleinden.",
+    q: {
+      pacemaker: "Heeft u een pacemaker of ingeplante hartdefibrillator?",
+      neuro: "Heeft u een neurostimulator/pijnpomp/insulinepomp?",
+      cochlea: "Heeft u een binnenoorimplantaat/cochleair implantaat?",
+      metaal: "Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?",
+      hoor: "Heeft u een hoorapparaat?",
+      rug: "Heeft u ooit een rugoperatie ondergaan?"
+    }
   },
-  fr: { 
-    Voornaam: "Prénom", Naam: "Nom", Ja: "Oui", Nee: "Non", 
-    Verzenden: "Envoyer",
-    Toestemming: "Je déclare avoir rempli ce questionnaire moi-même et en toute honnêteté et j'accepte l'utilisation de ces données à des fins médicales."
+  fr: {
+    title: "Questionnaire IRM",
+    voornaam: "Prénom",
+    naam: "Nom",
+    ja: "Oui",
+    nee: "Non",
+    submit: "Envoyer",
+    consent: "Je déclare avoir rempli ce questionnaire moi-même et honnêtement et j'accepte l'utilisation de ces données à des fins médicales.",
+    q: {
+      pacemaker: "Avez-vous un pacemaker ou un défibrillateur implanté ?",
+      neuro: "Avez-vous un neurostimulateur/pompe à douleur/pompe à insuline ?",
+      cochlea: "Avez-vous un implant cochléaire ?",
+      metaal: "Avez-vous un fragment métallique (ex. éclat de métal) dans l'œil ?",
+      hoor: "Portez-vous un appareil auditif ?",
+      rug: "Avez-vous déjà subi une opération du dos ?"
+    }
   },
-  en: { 
-    Voornaam: "First Name", Naam: "Last Name", Ja: "Yes", Nee: "No", 
-    Verzenden: "Submit",
-    Toestemming: "I declare that I have completed this questionnaire myself and truthfully, and I agree to the use of this data for medical purposes."
+  en: {
+    title: "MRI Questionnaire",
+    voornaam: "First name",
+    naam: "Last name",
+    ja: "Yes",
+    nee: "No",
+    submit: "Submit",
+    consent: "I declare that I have completed this questionnaire myself and truthfully and agree to the use of this data for medical purposes.",
+    q: {
+      pacemaker: "Do you have a pacemaker or implanted defibrillator?",
+      neuro: "Do you have a neurostimulator/pain pump/insulin pump?",
+      cochlea: "Do you have a cochlear implant?",
+      metaal: "Do you have a metal fragment (e.g. metal splinter) in your eye?",
+      hoor: "Do you wear a hearing aid?",
+      rug: "Have you ever had back surgery?"
+    }
   }
 };
 
-// Taalkeuze
-document.getElementById("taal").addEventListener("change", function() {
-  const lang = this.value;
+function applyLang(lang){
+  document.getElementById("title").textContent = T[lang].title;
+  document.getElementById("lblVoornaam").textContent = T[lang].voornaam;
+  document.getElementById("lblNaam").textContent = T[lang].naam;
+  document.getElementById("submit").textContent = T[lang].submit;
+  document.getElementById("consentText").textContent = T[lang].consent;
 
-  // Labels aanpassen
-  document.querySelector('label[for="voornaam"]').textContent = translations[lang].Voornaam;
-  document.querySelector('label[for="naam"]').textContent = translations[lang].Naam;
-
-  // Radio buttons Ja/Nee
-  document.querySelectorAll('.options label input').forEach(input => {
-    const label = input.parentElement;
-    if(input.value === "Ja") label.childNodes[1].textContent = translations[lang].Ja;
-    if(input.value === "Nee") label.childNodes[1].textContent = translations[lang].Nee;
+  document.querySelectorAll(".question").forEach(q=>{
+    q.textContent = T[lang].q[q.dataset.q];
   });
-
-  // Verzenden knop
-  document.getElementById("submitBtn").textContent = translations[lang].Verzenden;
-
-  // Toestemmingsverklaring aanpassen
-  document.querySelector('.consent label').childNodes[1].textContent = " " + translations[lang].Toestemming;
-});
-
-// Verzenden + mailinstellingen
-document.getElementById("mriForm").addEventListener("submit", function () {
-  const kritiekeVelden = [
-    "Heeft u een pacemaker of ingeplante hartdefibrillator?",
-    "Heeft u een neurostimulator/pijnpomp/insulinepomp?",
-    "Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?"
-  ];
-
-  kritiekeVelden.forEach(veld => {
-    const keuze = this.querySelector(`input[name="${veld}"]:checked`);
-    if (keuze && keuze.value.toLowerCase() === "ja") {
-      keuze.value = "JA"; // hoofdletters in mail
-    }
-  });
-
-  const voornaam = this.elements["voornaam"].value;
-  const naam = this.elements["naam"].value;
-  this.elements["_subject"].value = "MRI vragenlijst – " + voornaam + " " + naam;
-});
-
-// Check of alle velden ingevuld zijn (verzendknop)
-const form = document.getElementById("mriForm");
-const submitBtn = document.getElementById("submitBtn");
-
-function checkFormCompletion() {
-  let allFilled = true;
-  const radioGroups = [
-    "Heeft u een pacemaker of ingeplante hartdefibrillator?",
-    "Heeft u een neurostimulator/pijnpomp/insulinepomp?",
-    "Heeft u een binnenoorimplantaat/cochleair implantaat?",
-    "Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?",
-    "Heeft u een hoorapparaat?",
-    "Heeft u ooit een rugoperatie ondergaan?"
-  ];
-
-  radioGroups.forEach(name => {
-    const checked = form.querySelector(`input[name="${name}"]:checked`);
-    if (!checked) allFilled = false;
-  });
-
-  if (!form.elements["voornaam"].value.trim() ||
-      !form.elements["naam"].value.trim() ||
-      !form.elements["toestemming"].checked) {
-    allFilled = false;
-  }
-
-  if(allFilled) {
-    submitBtn.disabled = false;
-    submitBtn.style.backgroundColor = "#007bff";
-    submitBtn.style.color = "#fff";
-  } else {
-    submitBtn.disabled = true;
-    submitBtn.style.backgroundColor = "#ccc";
-    submitBtn.style.color = "#666";
-  }
+  document.querySelectorAll(".ja").forEach(e=>e.textContent=T[lang].ja);
+  document.querySelectorAll(".nee").forEach(e=>e.textContent=T[lang].nee);
 }
 
-form.querySelectorAll('input').forEach(input => {
-  input.addEventListener('change', checkFormCompletion);
-});
-form.querySelectorAll('input[type="text"]').forEach(input => {
-  input.addEventListener('input', checkFormCompletion);
+document.getElementById("lang").addEventListener("change", e=>{
+  applyLang(e.target.value);
 });
 
-checkFormCompletion();
+applyLang("nl");
 </script>
 
 </body>
