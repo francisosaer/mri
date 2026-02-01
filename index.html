@@ -72,8 +72,6 @@ button {
 <body>
 
 <form action="https://formspree.io/f/mdaaznay" method="POST" id="mriForm">
-  <!-- Vervang XXXXXXXX door je Formspree ID -->
-
   <h1>MRI vragenlijst</h1>
 
   <!-- Taalkeuze -->
@@ -85,13 +83,13 @@ button {
   </select>
 
   <!-- Persoonsgegevens -->
-  <label>Voornaam</label>
+  <label for="voornaam">Voornaam</label>
   <input type="text" name="voornaam" required>
 
-  <label>Naam</label>
+  <label for="naam">Naam</label>
   <input type="text" name="naam" required>
 
-  <!-- Nieuwe vragen -->
+  <!-- Vragen -->
   <div class="question" data-key="Pacemaker">Heeft u een pacemaker of ingeplante hartdefibrillator?</div>
   <div class="options">
     <label><input type="radio" name="Pacemaker" value="Ja" required> Ja</label>
@@ -144,9 +142,10 @@ button {
 </form>
 
 <script>
-// Vertalingen
 const translations = {
   nl: {
+    Voornaam: "Voornaam",
+    Naam: "Naam",
     Pacemaker: "Heeft u een pacemaker of ingeplante hartdefibrillator?",
     Pijnpomp: "Heeft u een neurostimulator/pijnpomp/insulinepomp?",
     Binnenoor: "Heeft u een binnenoorimplantaat/cochleair implantaat?",
@@ -157,6 +156,8 @@ const translations = {
     Nee: "Nee"
   },
   fr: {
+    Voornaam: "Prénom",
+    Naam: "Nom",
     Pacemaker: "Avez-vous un pacemaker ou un défibrillateur cardiaque implanté?",
     Pijnpomp: "Avez-vous un neurostimulateur / pompe à douleur / pompe à insuline?",
     Binnenoor: "Avez-vous un implant de l'oreille interne / implant cochléaire?",
@@ -167,6 +168,8 @@ const translations = {
     Nee: "Non"
   },
   en: {
+    Voornaam: "First Name",
+    Naam: "Last Name",
     Pacemaker: "Do you have a pacemaker or implanted defibrillator?",
     Pijnpomp: "Do you have a neurostimulator / pain pump / insulin pump?",
     Binnenoor: "Do you have an inner ear implant / cochlear implant?",
@@ -181,15 +184,23 @@ const translations = {
 // Update labels bij taalkeuze
 document.getElementById("taal").addEventListener("change", function() {
   const lang = this.value;
+
+  // Vragen
   document.querySelectorAll('.question').forEach(q => {
     const key = q.dataset.key;
     q.textContent = translations[lang][key];
   });
+
+  // Ja/Nee
   document.querySelectorAll('.options label input').forEach(input => {
     const label = input.parentElement;
     if(input.value === "Ja") label.childNodes[1].textContent = translations[lang].Ja;
     if(input.value === "Nee") label.childNodes[1].textContent = translations[lang].Nee;
   });
+
+  // Persoonsgegevens labels
+  document.querySelector('label[for="voornaam"]').textContent = translations[lang].Voornaam;
+  document.querySelector('label[for="naam"]').textContent = translations[lang].Naam;
 });
 
 document.getElementById("mriForm").addEventListener("submit", function () {
