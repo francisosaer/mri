@@ -96,40 +96,40 @@ button:disabled {
   <input type="text" name="naam" required>
 
   <!-- Vragen -->
-  <div class="question" data-key="Pacemaker">Heeft u een pacemaker of ingeplante hartdefibrillator?</div>
+  <div class="question">Heeft u een pacemaker of ingeplante hartdefibrillator?</div>
   <div class="options">
-    <label><input type="radio" name="Pacemaker" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Pacemaker" value="Nee"> Nee</label>
+    <label><input type="radio" name="Heeft u een pacemaker of ingeplante hartdefibrillator?" value="Ja" required> Ja</label>
+    <label><input type="radio" name="Heeft u een pacemaker of ingeplante hartdefibrillator?" value="Nee"> Nee</label>
   </div>
 
-  <div class="question" data-key="Pijnpomp">Heeft u een neurostimulator/pijnpomp/insulinepomp?</div>
+  <div class="question">Heeft u een neurostimulator/pijnpomp/insulinepomp?</div>
   <div class="options">
-    <label><input type="radio" name="Pijnpomp" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Pijnpomp" value="Nee"> Nee</label>
+    <label><input type="radio" name="Heeft u een neurostimulator/pijnpomp/insulinepomp?" value="Ja" required> Ja</label>
+    <label><input type="radio" name="Heeft u een neurostimulator/pijnpomp/insulinepomp?" value="Nee"> Nee</label>
   </div>
 
-  <div class="question" data-key="Binnenoor">Heeft u een binnenoorimplantaat/cochleair implantaat?</div>
+  <div class="question">Heeft u een binnenoorimplantaat/cochleair implantaat?</div>
   <div class="options">
-    <label><input type="radio" name="Binnenoor" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Binnenoor" value="Nee"> Nee</label>
+    <label><input type="radio" name="Heeft u een binnenoorimplantaat/cochleair implantaat?" value="Ja" required> Ja</label>
+    <label><input type="radio" name="Heeft u een binnenoorimplantaat/cochleair implantaat?" value="Nee"> Nee</label>
   </div>
 
-  <div class="question" data-key="Metaal">Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?</div>
+  <div class="question">Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?</div>
   <div class="options">
-    <label><input type="radio" name="Metaal" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Metaal" value="Nee"> Nee</label>
+    <label><input type="radio" name="Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?" value="Ja" required> Ja</label>
+    <label><input type="radio" name="Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?" value="Nee"> Nee</label>
   </div>
 
-  <div class="question" data-key="Hoorapparaat">Heeft u een hoorapparaat?</div>
+  <div class="question">Heeft u een hoorapparaat?</div>
   <div class="options">
-    <label><input type="radio" name="Hoorapparaat" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Hoorapparaat" value="Nee"> Nee</label>
+    <label><input type="radio" name="Heeft u een hoorapparaat?" value="Ja" required> Ja</label>
+    <label><input type="radio" name="Heeft u een hoorapparaat?" value="Nee"> Nee</label>
   </div>
 
-  <div class="question" data-key="Rugoperatie">Heeft u ooit een rugoperatie ondergaan?</div>
+  <div class="question">Heeft u ooit een rugoperatie ondergaan?</div>
   <div class="options">
-    <label><input type="radio" name="Rugoperatie" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Rugoperatie" value="Nee"> Nee</label>
+    <label><input type="radio" name="Heeft u ooit een rugoperatie ondergaan?" value="Ja" required> Ja</label>
+    <label><input type="radio" name="Heeft u ooit een rugoperatie ondergaan?" value="Nee"> Nee</label>
   </div>
 
   <!-- Toestemming / verklaring -->
@@ -148,70 +148,34 @@ button:disabled {
 </form>
 
 <script>
+// Vertalingen voor formulier UI (mail blijft NL)
 const translations = {
-  nl: {
-    Voornaam: "Voornaam",
-    Naam: "Naam",
-    Pacemaker: "Heeft u een pacemaker of ingeplante hartdefibrillator?",
-    Pijnpomp: "Heeft u een neurostimulator/pijnpomp/insulinepomp?",
-    Binnenoor: "Heeft u een binnenoorimplantaat/cochleair implantaat?",
-    Metaal: "Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?",
-    Hoorapparaat: "Heeft u een hoorapparaat?",
-    Rugoperatie: "Heeft u ooit een rugoperatie ondergaan?",
-    Ja: "Ja",
-    Nee: "Nee"
-  },
-  fr: {
-    Voornaam: "Prénom",
-    Naam: "Nom",
-    Pacemaker: "Avez-vous un pacemaker ou un défibrillateur cardiaque implanté?",
-    Pijnpomp: "Avez-vous un neurostimulateur / pompe à douleur / pompe à insuline?",
-    Binnenoor: "Avez-vous un implant de l'oreille interne / implant cochléaire?",
-    Metaal: "Avez-vous un fragment métallique (ex: éclat de métal) dans votre œil?",
-    Hoorapparaat: "Avez-vous un appareil auditif?",
-    Rugoperatie: "Avez-vous déjà subi une chirurgie du dos?",
-    Ja: "Oui",
-    Nee: "Non"
-  },
-  en: {
-    Voornaam: "First Name",
-    Naam: "Last Name",
-    Pacemaker: "Do you have a pacemaker or implanted defibrillator?",
-    Pijnpomp: "Do you have a neurostimulator / pain pump / insulin pump?",
-    Binnenoor: "Do you have an inner ear implant / cochlear implant?",
-    Metaal: "Do you have a metal fragment (e.g., splinter) in your eye?",
-    Hoorapparaat: "Do you have a hearing aid?",
-    Rugoperatie: "Have you ever had back surgery?",
-    Ja: "Yes",
-    Nee: "No"
-  }
+  nl: { Voornaam: "Voornaam", Naam: "Naam", Ja: "Ja", Nee: "Nee" },
+  fr: { Voornaam: "Prénom", Naam: "Nom", Ja: "Oui", Nee: "Non" },
+  en: { Voornaam: "First Name", Naam: "Last Name", Ja: "Yes", Nee: "No" }
 };
 
 // Taalkeuze
 document.getElementById("taal").addEventListener("change", function() {
   const lang = this.value;
+  document.querySelector('label[for="voornaam"]').textContent = translations[lang].Voornaam;
+  document.querySelector('label[for="naam"]').textContent = translations[lang].Naam;
 
-  // Update vragen
-  document.querySelectorAll('.question').forEach(q => {
-    const key = q.dataset.key;
-    q.textContent = translations[lang][key];
-  });
-
-  // Update Ja/Nee
   document.querySelectorAll('.options label input').forEach(input => {
     const label = input.parentElement;
     if(input.value === "Ja") label.childNodes[1].textContent = translations[lang].Ja;
     if(input.value === "Nee") label.childNodes[1].textContent = translations[lang].Nee;
   });
-
-  // Update labels voornaam / naam
-  document.querySelector('label[for="voornaam"]').textContent = translations[lang].Voornaam;
-  document.querySelector('label[for="naam"]').textContent = translations[lang].Naam;
 });
 
 // Verzenden + mailinstellingen
 document.getElementById("mriForm").addEventListener("submit", function () {
-  const kritiekeVelden = ["Pacemaker", "Pijnpomp", "Metaal"];
+  const kritiekeVelden = [
+    "Heeft u een pacemaker of ingeplante hartdefibrillator?",
+    "Heeft u een neurostimulator/pijnpomp/insulinepomp?",
+    "Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?"
+  ];
+
   kritiekeVelden.forEach(veld => {
     const keuze = this.querySelector(`input[name="${veld}"]:checked`);
     if (keuze && keuze.value.toLowerCase() === "ja") {
@@ -219,7 +183,6 @@ document.getElementById("mriForm").addEventListener("submit", function () {
     }
   });
 
-  // Mail onderwerp met naam
   const voornaam = this.elements["voornaam"].value;
   const naam = this.elements["naam"].value;
   this.elements["_subject"].value = "MRI vragenlijst – " + voornaam + " " + naam;
@@ -231,7 +194,15 @@ const submitBtn = document.getElementById("submitBtn");
 
 function checkFormCompletion() {
   let allFilled = true;
-  const radioGroups = ["Pacemaker","Pijnpomp","Binnenoor","Metaal","Hoorapparaat","Rugoperatie"];
+  const radioGroups = [
+    "Heeft u een pacemaker of ingeplante hartdefibrillator?",
+    "Heeft u een neurostimulator/pijnpomp/insulinepomp?",
+    "Heeft u een binnenoorimplantaat/cochleair implantaat?",
+    "Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?",
+    "Heeft u een hoorapparaat?",
+    "Heeft u ooit een rugoperatie ondergaan?"
+  ];
+
   radioGroups.forEach(name => {
     const checked = form.querySelector(`input[name="${name}"]:checked`);
     if (!checked) allFilled = false;
@@ -254,7 +225,6 @@ function checkFormCompletion() {
   }
 }
 
-// Event listeners op alle inputs
 form.querySelectorAll('input').forEach(input => {
   input.addEventListener('change', checkFormCompletion);
 });
@@ -262,10 +232,8 @@ form.querySelectorAll('input[type="text"]').forEach(input => {
   input.addEventListener('input', checkFormCompletion);
 });
 
-// Initial check
 checkFormCompletion();
 </script>
 
 </body>
 </html>
-
