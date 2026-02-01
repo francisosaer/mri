@@ -20,14 +20,22 @@ form {
   border-radius: 10px;
 }
 
-h1 { text-align: center; }
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-label { display: block; margin-top: 15px; }
+label {
+  display: block;
+  margin-top: 15px;
+}
 
-select, input[type="text"] {
+select,
+input[type="text"] {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
+  font-size: 16px;
 }
 
 .question {
@@ -46,10 +54,10 @@ button {
   width: 100%;
   padding: 14px;
   font-size: 18px;
-  background: #ccc;
-  color: #666;
   border: none;
   border-radius: 6px;
+  background: #ccc;
+  color: #666;
 }
 
 button.enabled {
@@ -67,7 +75,9 @@ button.enabled {
 
 <body>
 
-<form id="mriForm" action="https://formspree.io/f/mdaaznay" method="POST">
+<form id="mriForm"
+      action="https://formspree.io/f/mdaaznay"
+      method="POST">
 
 <h1 id="title"></h1>
 
@@ -96,9 +106,11 @@ button.enabled {
 <input type="hidden" name="_subject" id="subject">
 
 <button type="submit" id="submitBtn" disabled></button>
+
 </form>
 
 <script>
+// ================= VRAGEN =================
 const QUESTIONS = {
   q1: {
     nl: "Heeft u een pacemaker of ingeplante hartdefibrillator?",
@@ -132,13 +144,15 @@ const QUESTIONS = {
   }
 };
 
+// ================= UI TEKST =================
 const UI = {
   nl: {
     title: "MRI vragenlijst",
     first: "Voornaam",
     last: "Naam",
     submit: "Verzenden",
-    consent: "Ik verklaar dat ik deze vragenlijst zelf en naar waarheid heb ingevuld en ga akkoord met het gebruik van deze gegevens voor medische doeleinden.",
+    consent:
+      "Ik verklaar dat ik deze vragenlijst zelf en naar waarheid heb ingevuld en ga akkoord met het gebruik van deze gegevens voor medische doeleinden.",
     yes: "Ja",
     no: "Nee",
     lang: "Taal"
@@ -148,7 +162,8 @@ const UI = {
     first: "Prénom",
     last: "Nom",
     submit: "Envoyer",
-    consent: "Je déclare avoir rempli ce questionnaire personnellement et honnêtement et j’accepte l’utilisation de ces données à des fins médicales.",
+    consent:
+      "Je déclare avoir rempli ce questionnaire personnellement et honnêtement et j’accepte l’utilisation de ces données à des fins médicales.",
     yes: "Oui",
     no: "Non",
     lang: "Langue"
@@ -158,7 +173,8 @@ const UI = {
     first: "First name",
     last: "Last name",
     submit: "Submit",
-    consent: "I declare that I have completed this questionnaire personally and truthfully and agree to the use of this data for medical purposes.",
+    consent:
+      "I declare that I have completed this questionnaire personally and truthfully and agree to the use of this data for medical purposes.",
     yes: "Yes",
     no: "No",
     lang: "Language"
@@ -169,8 +185,11 @@ const form = document.getElementById("mriForm");
 const questionsDiv = document.getElementById("questions");
 const submitBtn = document.getElementById("submitBtn");
 
+// ================= RENDER =================
 function render(lang) {
   const t = UI[lang];
+
+  document.documentElement.lang = lang;
   document.getElementById("title").innerText = t.title;
   document.getElementById("labelFirst").innerText = t.first;
   document.getElementById("labelLast").innerText = t.last;
@@ -187,8 +206,14 @@ function render(lang) {
     questionsDiv.innerHTML += `
       <div class="question">${shownQuestion}</div>
       <div class="options">
-        <label><input type="radio" name="${nlQuestion}" value="${t.yes}" required> ${t.yes}</label>
-        <label><input type="radio" name="${nlQuestion}" value="${t.no}"> ${t.no}</label>
+        <label>
+          <input type="radio" name="${nlQuestion}" value="${t.yes}" required>
+          ${t.yes}
+        </label>
+        <label>
+          <input type="radio" name="${nlQuestion}" value="${t.no}">
+          ${t.no}
+        </label>
       </div>`;
   }
 }
@@ -198,6 +223,7 @@ document.getElementById("language").addEventListener("change", e => {
   checkComplete();
 });
 
+// ================= VALIDATIE =================
 function checkComplete() {
   const radios = form.querySelectorAll("input[type=radio]");
   const checkbox = form.querySelector("input[type=checkbox]");
@@ -217,20 +243,29 @@ function checkComplete() {
 
 form.addEventListener("change", checkComplete);
 
+// ================= SUBMIT FIX =================
 form.addEventListener("submit", () => {
   const radios = form.querySelectorAll("input[type=radio]");
+
   radios.forEach(r => {
-    if (r.checked && r.value.toLowerCase().startsWith("ja")) {
-      r.value = "JA";
+    if (r.checked) {
+      const v = r.value.toLowerCase();
+      if (v === "yes" || v === "oui" || v === "ja") {
+        r.value = "JA";
+      } else {
+        r.value = "Nee";
+      }
     }
   });
 
   const first = form.elements["Voornaam"].value;
   const last = form.elements["Naam"].value;
+
   document.getElementById("subject").value =
     "MRI vragenlijst – " + first + " " + last;
 });
 
+// init
 render("nl");
 </script>
 
