@@ -11,34 +11,75 @@ body {
   background: #f7f7f7;
   padding: 20px;
 }
+
 form {
   max-width: 600px;
   margin: auto;
-  background: #fff;
+  background: #ffffff;
   padding: 25px;
   border-radius: 10px;
 }
-h1 { text-align: center; }
+
+h1 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* Algemene labels en inputs */
+label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+input[type="text"], select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+/* Taalkeuze apart blok */
+.language {
+  margin-bottom: 25px;
+}
+
+/* Vragen */
 .question {
   font-weight: bold;
   font-size: 18px;
-  margin-top: 25px;
+  margin-top: 30px;
+  margin-bottom: 10px;
 }
+
 .options {
   display: flex;
-  gap: 30px;
+  gap: 40px;
+  margin-bottom: 10px;
 }
+
+/* Verklaring */
+.consent {
+  margin-top: 30px;
+  font-size: 14px;
+}
+
+/* Verzendknop */
 button {
-  margin-top: 25px;
+  margin-top: 30px;
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   font-size: 18px;
   border: none;
   border-radius: 6px;
-}
-button:disabled {
   background: #ccc;
   color: #666;
+  cursor: not-allowed;
+}
+
+button.enabled {
+  background: #007BFF;
+  color: #fff;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -49,14 +90,15 @@ button:disabled {
 
 <h1 id="title">MRI vragenlijst</h1>
 
-<!-- TAAL -->
-<label>
-<select id="lang">
-  <option value="nl">Nederlands</option>
-  <option value="fr">Français</option>
-  <option value="en">English</option>
-</select>
-</label>
+<!-- TAALKEUZE -->
+<div class="language">
+  <label for="lang">Taal / Language / Langue</label>
+  <select id="lang">
+    <option value="nl">Nederlands</option>
+    <option value="fr">Français</option>
+    <option value="en">English</option>
+  </select>
+</div>
 
 <!-- NAAM -->
 <label id="lblVoornaam">Voornaam</label>
@@ -103,14 +145,16 @@ button:disabled {
 </div>
 
 <!-- VERKLARING -->
-<label>
-<input type="checkbox" name="Toestemming" required>
-<span id="consentText"></span>
-</label>
+<div class="consent">
+  <label>
+    <input type="checkbox" required>
+    <span id="consentText"></span>
+  </label>
+</div>
 
 <input type="hidden" name="_subject" id="subject">
 
-<button type="submit" id="submit" disabled></button>
+<button type="submit" id="submitBtn" disabled></button>
 
 </form>
 
@@ -173,8 +217,8 @@ function applyLang(lang){
   document.getElementById("title").textContent = T[lang].title;
   document.getElementById("lblVoornaam").textContent = T[lang].voornaam;
   document.getElementById("lblNaam").textContent = T[lang].naam;
-  document.getElementById("submit").textContent = T[lang].submit;
   document.getElementById("consentText").textContent = T[lang].consent;
+  document.getElementById("submitBtn").textContent = T[lang].submit;
 
   document.querySelectorAll(".question").forEach(q=>{
     q.textContent = T[lang].q[q.dataset.q];
@@ -188,7 +232,22 @@ document.getElementById("lang").addEventListener("change", e=>{
 });
 
 applyLang("nl");
+
+/* Activeer knop wanneer alles ingevuld is */
+const form = document.getElementById("mriForm");
+const button = document.getElementById("submitBtn");
+
+form.addEventListener("input", () => {
+  if (form.checkValidity()) {
+    button.disabled = false;
+    button.classList.add("enabled");
+  } else {
+    button.disabled = true;
+    button.classList.remove("enabled");
+  }
+});
 </script>
 
 </body>
 </html>
+
