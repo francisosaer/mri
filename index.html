@@ -150,22 +150,43 @@ button:disabled {
 <script>
 // Vertalingen voor formulier UI (mail blijft NL)
 const translations = {
-  nl: { Voornaam: "Voornaam", Naam: "Naam", Ja: "Ja", Nee: "Nee" },
-  fr: { Voornaam: "Prénom", Naam: "Nom", Ja: "Oui", Nee: "Non" },
-  en: { Voornaam: "First Name", Naam: "Last Name", Ja: "Yes", Nee: "No" }
+  nl: { 
+    Voornaam: "Voornaam", Naam: "Naam", Ja: "Ja", Nee: "Nee", 
+    Verzenden: "Verzenden",
+    Toestemming: "Ik verklaar dat ik deze vragenlijst zelf en naar waarheid heb ingevuld en ga akkoord met het gebruik van deze gegevens voor medische doeleinden."
+  },
+  fr: { 
+    Voornaam: "Prénom", Naam: "Nom", Ja: "Oui", Nee: "Non", 
+    Verzenden: "Envoyer",
+    Toestemming: "Je déclare avoir rempli ce questionnaire moi-même et en toute honnêteté et j'accepte l'utilisation de ces données à des fins médicales."
+  },
+  en: { 
+    Voornaam: "First Name", Naam: "Last Name", Ja: "Yes", Nee: "No", 
+    Verzenden: "Submit",
+    Toestemming: "I declare that I have completed this questionnaire myself and truthfully, and I agree to the use of this data for medical purposes."
+  }
 };
 
 // Taalkeuze
 document.getElementById("taal").addEventListener("change", function() {
   const lang = this.value;
+
+  // Labels aanpassen
   document.querySelector('label[for="voornaam"]').textContent = translations[lang].Voornaam;
   document.querySelector('label[for="naam"]').textContent = translations[lang].Naam;
 
+  // Radio buttons Ja/Nee
   document.querySelectorAll('.options label input').forEach(input => {
     const label = input.parentElement;
     if(input.value === "Ja") label.childNodes[1].textContent = translations[lang].Ja;
     if(input.value === "Nee") label.childNodes[1].textContent = translations[lang].Nee;
   });
+
+  // Verzenden knop
+  document.getElementById("submitBtn").textContent = translations[lang].Verzenden;
+
+  // Toestemmingsverklaring aanpassen
+  document.querySelector('.consent label').childNodes[1].textContent = " " + translations[lang].Toestemming;
 });
 
 // Verzenden + mailinstellingen
