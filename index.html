@@ -47,7 +47,7 @@ label {
   font-weight: normal;
 }
 
-input[type="text"] {
+input[type="text"], select {
   width: 100%;
   padding: 10px;
   font-size: 16px;
@@ -76,6 +76,14 @@ button {
 
   <h1>MRI vragenlijst</h1>
 
+  <!-- Taalkeuze -->
+  <label for="taal">Kies uw taal / Choisissez la langue / Choose your language</label>
+  <select id="taal" name="taal">
+    <option value="nl">Nederlands</option>
+    <option value="fr">Français</option>
+    <option value="en">English</option>
+  </select>
+
   <!-- Persoonsgegevens -->
   <label>Voornaam</label>
   <input type="text" name="voornaam" required>
@@ -83,39 +91,41 @@ button {
   <label>Naam</label>
   <input type="text" name="naam" required>
 
-  <!-- Prothese -->
-  <div class="question">Prothese in het lichaam</div>
+  <!-- Nieuwe vragen -->
+  <div class="question" data-key="Pacemaker">Heeft u een pacemaker of ingeplante hartdefibrillator?</div>
   <div class="options">
-    <label><input type="radio" name="Prothese" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Prothese" value="Nee"> Nee</label>
+    <label><input type="radio" name="Pacemaker" value="Ja" required> Ja</label>
+    <label><input type="radio" name="Pacemaker" value="Nee"> Nee</label>
   </div>
 
-  <!-- PM -->
-  <div class="question">PM (pacemaker)</div>
-  <div class="options">
-    <label><input type="radio" name="PM" value="Ja" required> Ja</label>
-    <label><input type="radio" name="PM" value="Nee"> Nee</label>
-  </div>
-
-  <!-- Pijnpomp -->
-  <div class="question">Pijnpomp</div>
+  <div class="question" data-key="Pijnpomp">Heeft u een neurostimulator/pijnpomp/insulinepomp?</div>
   <div class="options">
     <label><input type="radio" name="Pijnpomp" value="Ja" required> Ja</label>
     <label><input type="radio" name="Pijnpomp" value="Nee"> Nee</label>
   </div>
 
-  <!-- Metaal -->
-  <div class="question">Metaalsplinters in oog</div>
+  <div class="question" data-key="Binnenoor">Heeft u een binnenoorimplantaat/cochleair implantaat?</div>
+  <div class="options">
+    <label><input type="radio" name="Binnenoor" value="Ja" required> Ja</label>
+    <label><input type="radio" name="Binnenoor" value="Nee"> Nee</label>
+  </div>
+
+  <div class="question" data-key="Metaal">Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?</div>
   <div class="options">
     <label><input type="radio" name="Metaal" value="Ja" required> Ja</label>
     <label><input type="radio" name="Metaal" value="Nee"> Nee</label>
   </div>
 
-  <!-- Zwanger -->
-  <div class="question">Zwanger</div>
+  <div class="question" data-key="Hoorapparaat">Heeft u een hoorapparaat?</div>
   <div class="options">
-    <label><input type="radio" name="Zwanger" value="Ja" required> Ja</label>
-    <label><input type="radio" name="Zwanger" value="Nee"> Nee</label>
+    <label><input type="radio" name="Hoorapparaat" value="Ja" required> Ja</label>
+    <label><input type="radio" name="Hoorapparaat" value="Nee"> Nee</label>
+  </div>
+
+  <div class="question" data-key="Rugoperatie">Heeft u ooit een rugoperatie ondergaan?</div>
+  <div class="options">
+    <label><input type="radio" name="Rugoperatie" value="Ja" required> Ja</label>
+    <label><input type="radio" name="Rugoperatie" value="Nee"> Nee</label>
   </div>
 
   <!-- Toestemming / verklaring -->
@@ -131,25 +141,70 @@ button {
   <input type="hidden" name="_subject" id="emailSubject">
 
   <button type="submit">Verzenden</button>
-
 </form>
 
 <script>
-document.getElementById("mriForm").addEventListener("submit", function () {
+// Vertalingen
+const translations = {
+  nl: {
+    Pacemaker: "Heeft u een pacemaker of ingeplante hartdefibrillator?",
+    Pijnpomp: "Heeft u een neurostimulator/pijnpomp/insulinepomp?",
+    Binnenoor: "Heeft u een binnenoorimplantaat/cochleair implantaat?",
+    Metaal: "Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?",
+    Hoorapparaat: "Heeft u een hoorapparaat?",
+    Rugoperatie: "Heeft u ooit een rugoperatie ondergaan?",
+    Ja: "Ja",
+    Nee: "Nee"
+  },
+  fr: {
+    Pacemaker: "Avez-vous un pacemaker ou un défibrillateur cardiaque implanté?",
+    Pijnpomp: "Avez-vous un neurostimulateur / pompe à douleur / pompe à insuline?",
+    Binnenoor: "Avez-vous un implant de l'oreille interne / implant cochléaire?",
+    Metaal: "Avez-vous un fragment métallique (ex: éclat de métal) dans votre œil?",
+    Hoorapparaat: "Avez-vous un appareil auditif?",
+    Rugoperatie: "Avez-vous déjà subi une chirurgie du dos?",
+    Ja: "Oui",
+    Nee: "Non"
+  },
+  en: {
+    Pacemaker: "Do you have a pacemaker or implanted defibrillator?",
+    Pijnpomp: "Do you have a neurostimulator / pain pump / insulin pump?",
+    Binnenoor: "Do you have an inner ear implant / cochlear implant?",
+    Metaal: "Do you have a metal fragment (e.g., splinter) in your eye?",
+    Hoorapparaat: "Do you have a hearing aid?",
+    Rugoperatie: "Have you ever had back surgery?",
+    Ja: "Yes",
+    Nee: "No"
+  }
+};
 
-  // Zet kritieke velden in hoofdletters voor mail
-  const kritiekeVelden = ["PM", "Pijnpomp", "Metaal"];
+// Update labels bij taalkeuze
+document.getElementById("taal").addEventListener("change", function() {
+  const lang = this.value;
+  document.querySelectorAll('.question').forEach(q => {
+    const key = q.dataset.key;
+    q.textContent = translations[lang][key];
+  });
+  document.querySelectorAll('.options label input').forEach(input => {
+    const label = input.parentElement;
+    if(input.value === "Ja") label.childNodes[1].textContent = translations[lang].Ja;
+    if(input.value === "Nee") label.childNodes[1].textContent = translations[lang].Nee;
+  });
+});
+
+document.getElementById("mriForm").addEventListener("submit", function () {
+  // Kritieke velden in hoofdletters
+  const kritiekeVelden = ["Pacemaker", "Pijnpomp", "Metaal"];
   kritiekeVelden.forEach(veld => {
     const keuze = this.querySelector(`input[name="${veld}"]:checked`);
     if (keuze && keuze.value.toLowerCase() === "ja") {
-      keuze.value = "JA"; // GEEN HTML, alleen hoofdletters
+      keuze.value = "JA"; // hoofdletters in mail
     }
   });
 
   // Mail-onderwerp automatisch instellen
   const voornaam = this.elements["voornaam"].value;
   const naam = this.elements["naam"].value;
-
   this.elements["_subject"].value =
     "MRI vragenlijst – " + voornaam + " " + naam;
 });
