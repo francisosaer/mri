@@ -60,6 +60,12 @@ button {
   padding: 12px;
   font-size: 18px;
   cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
 
 .consent {
@@ -138,7 +144,7 @@ button {
   <!-- Mail-onderwerp -->
   <input type="hidden" name="_subject" id="emailSubject">
 
-  <button type="submit">Verzenden</button>
+  <button type="submit" id="submitBtn" disabled>Verzenden</button>
 </form>
 
 <script>
@@ -181,30 +187,30 @@ const translations = {
   }
 };
 
-// Update labels bij taalkeuze
+// Taalkeuze
 document.getElementById("taal").addEventListener("change", function() {
   const lang = this.value;
 
-  // Vragen
+  // Update vragen
   document.querySelectorAll('.question').forEach(q => {
     const key = q.dataset.key;
     q.textContent = translations[lang][key];
   });
 
-  // Ja/Nee
+  // Update Ja/Nee
   document.querySelectorAll('.options label input').forEach(input => {
     const label = input.parentElement;
     if(input.value === "Ja") label.childNodes[1].textContent = translations[lang].Ja;
     if(input.value === "Nee") label.childNodes[1].textContent = translations[lang].Nee;
   });
 
-  // Persoonsgegevens labels
+  // Update labels voornaam / naam
   document.querySelector('label[for="voornaam"]').textContent = translations[lang].Voornaam;
   document.querySelector('label[for="naam"]').textContent = translations[lang].Naam;
 });
 
+// Verzenden + mailinstellingen
 document.getElementById("mriForm").addEventListener("submit", function () {
-  // Kritieke velden in hoofdletters
   const kritiekeVelden = ["Pacemaker", "Pijnpomp", "Metaal"];
   kritiekeVelden.forEach(veld => {
     const keuze = this.querySelector(`input[name="${veld}"]:checked`);
@@ -213,13 +219,53 @@ document.getElementById("mriForm").addEventListener("submit", function () {
     }
   });
 
-  // Mail-onderwerp automatisch instellen
+  // Mail onderwerp met naam
   const voornaam = this.elements["voornaam"].value;
   const naam = this.elements["naam"].value;
-  this.elements["_subject"].value =
-    "MRI vragenlijst – " + voornaam + " " + naam;
+  this.elements["_subject"].value = "MRI vragenlijst – " + voornaam + " " + naam;
 });
+
+// Check of alle velden ingevuld zijn (verzendknop)
+const form = document.getElementById("mriForm");
+const submitBtn = document.getElementById("submitBtn");
+
+function checkFormCompletion() {
+  let allFilled = true;
+  const radioGroups = ["Pacemaker","Pijnpomp","Binnenoor","Metaal","Hoorapparaat","Rugoperatie"];
+  radioGroups.forEach(name => {
+    const checked = form.querySelector(`input[name="${name}"]:checked`);
+    if (!checked) allFilled = false;
+  });
+
+  if (!form.elements["voornaam"].value.trim() ||
+      !form.elements["naam"].value.trim() ||
+      !form.elements["toestemming"].checked) {
+    allFilled = false;
+  }
+
+  if(allFilled) {
+    submitBtn.disabled = false;
+    submitBtn.style.backgroundColor = "#007bff";
+    submitBtn.style.color = "#fff";
+  } else {
+    submitBtn.disabled = true;
+    submitBtn.style.backgroundColor = "#ccc";
+    submitBtn.style.color = "#666";
+  }
+}
+
+// Event listeners op alle inputs
+form.querySelectorAll('input').forEach(input => {
+  input.addEventListener('change', checkFormCompletion);
+});
+form.querySelectorAll('input[type="text"]').forEach(input => {
+  input.addEventListener('input', checkFormCompletion);
+});
+
+// Initial check
+checkFormCompletion();
 </script>
 
 </body>
 </html>
+
