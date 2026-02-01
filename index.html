@@ -20,26 +20,18 @@ form {
   border-radius: 10px;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
+h1 { text-align: center; }
 
-label {
-  display: block;
-  margin-top: 15px;
-}
+label { display: block; margin-top: 15px; }
 
 select, input[type="text"] {
   width: 100%;
   padding: 10px;
-  font-size: 16px;
   margin-top: 5px;
 }
 
 .question {
   font-weight: bold;
-  font-size: 17px;
   margin-top: 25px;
 }
 
@@ -49,24 +41,20 @@ select, input[type="text"] {
   margin-top: 8px;
 }
 
-.options label {
-  font-weight: normal;
-}
-
 button {
   margin-top: 30px;
   width: 100%;
   padding: 14px;
   font-size: 18px;
-  border: none;
-  border-radius: 6px;
   background: #ccc;
   color: #666;
+  border: none;
+  border-radius: 6px;
 }
 
 button.enabled {
   background: #007bff;
-  color: #fff;
+  color: white;
   cursor: pointer;
 }
 
@@ -81,19 +69,19 @@ button.enabled {
 
 <form id="mriForm" action="https://formspree.io/f/mdaaznay" method="POST">
 
-<h1 id="title">MRI vragenlijst</h1>
+<h1 id="title"></h1>
 
-<label id="labelLanguage">Taal / Langue / Language</label>
+<label id="labelLang"></label>
 <select id="language">
   <option value="nl">Nederlands</option>
   <option value="fr">Français</option>
   <option value="en">English</option>
 </select>
 
-<label id="labelFirst">Voornaam</label>
+<label id="labelFirst"></label>
 <input type="text" name="Voornaam" required>
 
-<label id="labelLast">Naam</label>
+<label id="labelLast"></label>
 <input type="text" name="Naam" required>
 
 <div id="questions"></div>
@@ -101,20 +89,50 @@ button.enabled {
 <div class="consent">
   <label>
     <input type="checkbox" required>
-    <span id="consentText">
-      Ik verklaar dat ik deze vragenlijst zelf en naar waarheid heb ingevuld
-      en ga akkoord met het gebruik van deze gegevens voor medische doeleinden.
-    </span>
+    <span id="consentText"></span>
   </label>
 </div>
 
 <input type="hidden" name="_subject" id="subject">
 
-<button type="submit" id="submitBtn" disabled>Verzenden</button>
+<button type="submit" id="submitBtn" disabled></button>
 </form>
 
 <script>
-const translations = {
+const QUESTIONS = {
+  q1: {
+    nl: "Heeft u een pacemaker of ingeplante hartdefibrillator?",
+    fr: "Avez-vous un pacemaker ou un défibrillateur cardiaque implanté ?",
+    en: "Do you have a pacemaker or implanted cardiac defibrillator?"
+  },
+  q2: {
+    nl: "Heeft u een neurostimulator, pijnpomp of insulinepomp?",
+    fr: "Avez-vous un neurostimulateur, une pompe à douleur ou une pompe à insuline ?",
+    en: "Do you have a neurostimulator, pain pump or insulin pump?"
+  },
+  q3: {
+    nl: "Heeft u een binnenoorimplantaat of cochleair implantaat?",
+    fr: "Avez-vous un implant cochléaire ou un implant de l’oreille interne ?",
+    en: "Do you have a cochlear or inner ear implant?"
+  },
+  q4: {
+    nl: "Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?",
+    fr: "Avez-vous un fragment métallique (ex. éclat de métal) dans l’œil ?",
+    en: "Do you have a metal fragment (e.g. metal splinter) in your eye?"
+  },
+  q5: {
+    nl: "Heeft u een hoorapparaat?",
+    fr: "Portez-vous un appareil auditif ?",
+    en: "Do you wear a hearing aid?"
+  },
+  q6: {
+    nl: "Heeft u ooit een rugoperatie ondergaan?",
+    fr: "Avez-vous déjà subi une opération du dos ?",
+    en: "Have you ever had back surgery?"
+  }
+};
+
+const UI = {
   nl: {
     title: "MRI vragenlijst",
     first: "Voornaam",
@@ -123,14 +141,7 @@ const translations = {
     consent: "Ik verklaar dat ik deze vragenlijst zelf en naar waarheid heb ingevuld en ga akkoord met het gebruik van deze gegevens voor medische doeleinden.",
     yes: "Ja",
     no: "Nee",
-    questions: [
-      "Heeft u een pacemaker of ingeplante hartdefibrillator?",
-      "Heeft u een neurostimulator, pijnpomp of insulinepomp?",
-      "Heeft u een binnenoorimplantaat of cochleair implantaat?",
-      "Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?",
-      "Heeft u een hoorapparaat?",
-      "Heeft u ooit een rugoperatie ondergaan?"
-    ]
+    lang: "Taal"
   },
   fr: {
     title: "Questionnaire IRM",
@@ -139,7 +150,8 @@ const translations = {
     submit: "Envoyer",
     consent: "Je déclare avoir rempli ce questionnaire personnellement et honnêtement et j’accepte l’utilisation de ces données à des fins médicales.",
     yes: "Oui",
-    no: "Non"
+    no: "Non",
+    lang: "Langue"
   },
   en: {
     title: "MRI questionnaire",
@@ -148,38 +160,43 @@ const translations = {
     submit: "Submit",
     consent: "I declare that I have completed this questionnaire personally and truthfully and agree to the use of this data for medical purposes.",
     yes: "Yes",
-    no: "No"
+    no: "No",
+    lang: "Language"
   }
 };
 
 const form = document.getElementById("mriForm");
 const questionsDiv = document.getElementById("questions");
 const submitBtn = document.getElementById("submitBtn");
-const languageSelect = document.getElementById("language");
 
 function render(lang) {
-  const t = translations[lang];
-  document.documentElement.lang = lang;
+  const t = UI[lang];
   document.getElementById("title").innerText = t.title;
   document.getElementById("labelFirst").innerText = t.first;
   document.getElementById("labelLast").innerText = t.last;
   document.getElementById("submitBtn").innerText = t.submit;
   document.getElementById("consentText").innerText = t.consent;
+  document.getElementById("labelLang").innerText = t.lang;
 
   questionsDiv.innerHTML = "";
 
-  translations.nl.questions.forEach(q => {
+  for (const key in QUESTIONS) {
+    const nlQuestion = QUESTIONS[key].nl;
+    const shownQuestion = QUESTIONS[key][lang];
+
     questionsDiv.innerHTML += `
-      <div class="question">${q}</div>
+      <div class="question">${shownQuestion}</div>
       <div class="options">
-        <label><input type="radio" name="${q}" value="${t.yes}" required> ${t.yes}</label>
-        <label><input type="radio" name="${q}" value="${t.no}"> ${t.no}</label>
+        <label><input type="radio" name="${nlQuestion}" value="${t.yes}" required> ${t.yes}</label>
+        <label><input type="radio" name="${nlQuestion}" value="${t.no}"> ${t.no}</label>
       </div>`;
-  });
+  }
 }
 
-languageSelect.addEventListener("change", e => render(e.target.value));
-render("nl");
+document.getElementById("language").addEventListener("change", e => {
+  render(e.target.value);
+  checkComplete();
+});
 
 function checkComplete() {
   const radios = form.querySelectorAll("input[type=radio]");
@@ -213,8 +230,9 @@ form.addEventListener("submit", () => {
   document.getElementById("subject").value =
     "MRI vragenlijst – " + first + " " + last;
 });
+
+render("nl");
 </script>
 
 </body>
 </html>
-
