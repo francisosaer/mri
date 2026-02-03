@@ -12,6 +12,7 @@ body {
   padding: 20px;
 }
 
+/* ===== FORM ===== */
 form {
   max-width: 650px;
   margin: auto;
@@ -20,6 +21,25 @@ form {
   border-radius: 10px;
 }
 
+/* ===== LOGO ===== */
+.logo-container {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.logo-container img {
+  max-width: 180px;
+  height: auto;
+}
+
+/* ===== SCHEIDINGSLIJN ===== */
+.divider {
+  height: 1px;
+  background: #ddd;
+  margin: 15px 0 25px 0;
+}
+
+/* ===== TITELS & LABELS ===== */
 h1 {
   text-align: center;
   margin-bottom: 20px;
@@ -38,6 +58,7 @@ input[type="text"] {
   font-size: 16px;
 }
 
+/* ===== VRAGEN ===== */
 .question {
   font-weight: bold;
   margin-top: 25px;
@@ -49,6 +70,7 @@ input[type="text"] {
   margin-top: 8px;
 }
 
+/* ===== BUTTON ===== */
 button {
   margin-top: 30px;
   width: 100%;
@@ -66,9 +88,18 @@ button.enabled {
   cursor: pointer;
 }
 
+/* ===== TOESTEMMING ===== */
 .consent {
   margin-top: 25px;
   font-size: 14px;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  margin-top: 30px;
 }
 </style>
 </head>
@@ -79,38 +110,56 @@ button.enabled {
       action="https://formspree.io/f/mdaaznay"
       method="POST">
 
-<h1 id="title"></h1>
+  <!-- LOGO -->
+  <div class="logo-container">
+    <img src="sjabloonalma.png" alt="Ziekenhuislogo">
+  </div>
 
-<label id="labelLang"></label>
-<select id="language">
-  <option value="nl">Nederlands</option>
-  <option value="fr">Français</option>
-  <option value="en">English</option>
-</select>
+  <div class="divider"></div>
 
-<label id="labelFirst"></label>
-<input type="text" name="Voornaam" required>
+  <h1 id="title"></h1>
 
-<label id="labelLast"></label>
-<input type="text" name="Naam" required>
+  <!-- TAAL -->
+  <label id="labelLang"></label>
+  <select id="language">
+    <option value="nl">Nederlands</option>
+    <option value="fr">Français</option>
+    <option value="en">English</option>
+  </select>
 
-<div id="questions"></div>
+  <!-- NAAM -->
+  <label id="labelFirst"></label>
+  <input type="text" name="Voornaam" required>
 
-<div class="consent">
-  <label>
-    <input type="checkbox" required>
-    <span id="consentText"></span>
-  </label>
-</div>
+  <label id="labelLast"></label>
+  <input type="text" name="Naam" required>
 
-<input type="hidden" name="_subject" id="subject">
+  <!-- VRAGEN -->
+  <div id="questions"></div>
 
-<button type="submit" id="submitBtn" disabled></button>
+  <!-- TOESTEMMING -->
+  <div class="consent">
+    <label>
+      <input type="checkbox" required>
+      <span id="consentText"></span>
+    </label>
+  </div>
+
+  <!-- SUBJECT -->
+  <input type="hidden" name="_subject" id="subject">
+
+  <button type="submit" id="submitBtn" disabled></button>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Dienst Radiologie – MRI<br>
+    © Ziekenhuis
+  </div>
 
 </form>
 
 <script>
-// ================= VRAGEN =================
+/* ===== VRAGEN ===== */
 const QUESTIONS = {
   q1: {
     nl: "Heeft u een pacemaker of ingeplante hartdefibrillator?",
@@ -139,12 +188,12 @@ const QUESTIONS = {
   },
   q6: {
     nl: "Heeft u ooit een rugoperatie ondergaan?",
-    fr: "Avez-vous déjà subi une opération du dos ?",
+    fr: "Avez-vous déjà subi une operatie van de rug?",
     en: "Have you ever had back surgery?"
   }
 };
 
-// ================= UI TEKST =================
+/* ===== UI TEKST ===== */
 const UI = {
   nl: {
     title: "MRI vragenlijst",
@@ -185,11 +234,11 @@ const form = document.getElementById("mriForm");
 const questionsDiv = document.getElementById("questions");
 const submitBtn = document.getElementById("submitBtn");
 
-// ================= RENDER =================
+/* ===== RENDER ===== */
 function render(lang) {
   const t = UI[lang];
-
   document.documentElement.lang = lang;
+
   document.getElementById("title").innerText = t.title;
   document.getElementById("labelFirst").innerText = t.first;
   document.getElementById("labelLast").innerText = t.last;
@@ -206,24 +255,19 @@ function render(lang) {
     questionsDiv.innerHTML += `
       <div class="question">${shownQuestion}</div>
       <div class="options">
-        <label>
-          <input type="radio" name="${nlQuestion}" value="${t.yes}" required>
-          ${t.yes}
-        </label>
-        <label>
-          <input type="radio" name="${nlQuestion}" value="${t.no}">
-          ${t.no}
-        </label>
+        <label><input type="radio" name="${nlQuestion}" value="${t.yes}" required> ${t.yes}</label>
+        <label><input type="radio" name="${nlQuestion}" value="${t.no}"> ${t.no}</label>
       </div>`;
   }
 }
 
+/* ===== TAALKEUZE ===== */
 document.getElementById("language").addEventListener("change", e => {
   render(e.target.value);
   checkComplete();
 });
 
-// ================= VALIDATIE =================
+/* ===== VALIDATIE ===== */
 function checkComplete() {
   const radios = form.querySelectorAll("input[type=radio]");
   const checkbox = form.querySelector("input[type=checkbox]");
@@ -243,29 +287,24 @@ function checkComplete() {
 
 form.addEventListener("change", checkComplete);
 
-// ================= SUBMIT FIX =================
+/* ===== SUBMIT ===== */
 form.addEventListener("submit", () => {
   const radios = form.querySelectorAll("input[type=radio]");
 
   radios.forEach(r => {
     if (r.checked) {
       const v = r.value.toLowerCase();
-      if (v === "yes" || v === "oui" || v === "ja") {
-        r.value = "JA";
-      } else {
-        r.value = "Nee";
-      }
+      r.value = (v === "yes" || v === "oui" || v === "ja") ? "JA" : "Nee";
     }
   });
 
   const first = form.elements["Voornaam"].value;
   const last = form.elements["Naam"].value;
-
   document.getElementById("subject").value =
     "MRI vragenlijst – " + first + " " + last;
 });
 
-// init
+/* INIT */
 render("nl");
 </script>
 
