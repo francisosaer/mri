@@ -2,276 +2,312 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<title>Opmeet Tool</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRI vragenlijst</title>
 
 <style>
-html { font-size:30px; }
 body {
   font-family: Arial, sans-serif;
-  background:#f4f6f8;
-  max-width:1100px;
-  margin:auto;
-  padding:16px;
-}
-h1 { text-align:center; font-size:2.6rem; }
-
-.card, .element {
-  background:#fff;
-  border-radius:14px;
-  padding:18px;
-  margin-bottom:20px;
-  box-shadow:0 3px 8px rgba(0,0,0,.15);
+  background: #f7f7f7;
+  padding: 20px;
 }
 
-label { font-weight:bold; display:block; margin-top:14px; }
-input {
-  width:100%;
-  font-size:1.6rem;
-  padding:14px;
-  margin-top:6px;
+/* ===== FORM ===== */
+form {
+  max-width: 650px;
+  margin: auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
 }
 
-.element-header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+/* ===== LOGO ===== */
+.logo-container {
+  text-align: center;
+  margin-bottom: 10px;
 }
 
-.remove-element {
-  width:56px;
-  height:56px;
-  border:none;
-  border-radius:50%;
-  background:#f44336;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.logo-container img {
+  max-width: 180px;
+  height: auto;
 }
 
-.remove-element svg { fill:white; width:28px; }
-
-.photo-box {
-  margin-top:16px;
-  padding:16px;
-  border:3px dashed #bbb;
-  border-radius:14px;
-  text-align:center;
+/* ===== SCHEIDINGSLIJN ===== */
+.divider {
+  height: 1px;
+  background: #ddd;
+  margin: 15px 0 25px 0;
 }
 
-.camera-btn {
-  font-size:90px;
-  cursor:pointer;
+/* ===== TITELS & LABELS ===== */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.photo-wrapper {
-  position:relative;
-  margin-top:14px;
+label {
+  display: block;
+  margin-top: 15px;
 }
 
-.photo-wrapper img {
-  width:100%;
-  border-radius:10px;
+select,
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  font-size: 16px;
 }
 
-.remove-photo {
-  position:absolute;
-  top:8px;
-  right:8px;
-  background:rgba(244,67,54,.9);
-  color:white;
-  border:none;
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  font-size:20px;
+/* ===== VRAGEN ===== */
+.question {
+  font-weight: bold;
+  margin-top: 25px;
 }
 
+.options {
+  display: flex;
+  gap: 30px;
+  margin-top: 8px;
+}
+
+/* ===== BUTTON ===== */
 button {
-  width:100%;
-  padding:20px;
-  font-size:1.8rem;
-  border:none;
-  border-radius:14px;
-  margin-top:10px;
+  margin-top: 30px;
+  width: 100%;
+  padding: 14px;
+  font-size: 18px;
+  border: none;
+  border-radius: 6px;
+  background: #ccc;
+  color: #666;
 }
 
-.primary { background:#2c7be5; color:white; }
-
-.add-options {
-  display:flex;
-  gap:10px;
+button.enabled {
+  background: #007bff;
+  color: white;
+  cursor: pointer;
 }
 
-.add-options button { flex:1; }
+/* ===== TOESTEMMING ===== */
+.consent {
+  margin-top: 25px;
+  font-size: 14px;
+}
 
-.actions {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  margin-top: 30px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Opmeet Tool</h1>
+<form id="mriForm"
+      action="https://formspree.io/f/mdaaznay"
+      method="POST">
 
-<div class="card">
-  <label>Klantnaam</label>
-  <input id="clientName">
-  <label>Datum</label>
-  <input type="date" id="projectDate">
-</div>
+  <!-- LOGO -->
+  <div class="logo-container">
+    <img src="sjabloonalma.png" alt="Ziekenhuislogo">
+  </div>
 
-<button id="addBtn" class="primary">+ Element toevoegen</button>
-<div class="add-options" id="options" style="display:none">
-  <button data-type="Raam">Raam</button>
-  <button data-type="Deur">Deur</button>
-  <button data-type="Poort">Poort</button>
-</div>
+  <div class="divider"></div>
 
-<div id="elements"></div>
+  <h1 id="title"></h1>
 
-<div class="card actions">
-  <button onclick="exportPDF()">📄 PDF</button>
-  <button onclick="newProject()">🗑 Nieuw project</button>
-</div>
+  <!-- TAAL -->
+  <label id="labelLang"></label>
+  <select id="language">
+    <option value="nl">Nederlands</option>
+    <option value="fr">Français</option>
+    <option value="en">English</option>
+  </select>
+
+  <!-- NAAM -->
+  <label id="labelFirst"></label>
+  <input type="text" name="Voornaam" required>
+
+  <label id="labelLast"></label>
+  <input type="text" name="Naam" required>
+
+  <!-- VRAGEN -->
+  <div id="questions"></div>
+
+  <!-- TOESTEMMING -->
+  <div class="consent">
+    <label>
+      <input type="checkbox" required>
+      <span id="consentText"></span>
+    </label>
+  </div>
+
+  <!-- SUBJECT -->
+  <input type="hidden" name="_subject" id="subject">
+
+  <button type="submit" id="submitBtn" disabled></button>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Dienst Radiologie – MRI<br>
+    © AZ Alma Eeklo
+  </div>
+
+</form>
 
 <script>
-const container = document.getElementById("elements");
-const counters = {Raam:0, Deur:0, Poort:0};
-
-document.getElementById("addBtn").onclick = () => {
-  options.style.display = options.style.display === "flex" ? "none" : "flex";
+/* ===== VRAGEN ===== */
+const QUESTIONS = {
+  q1: {
+    nl: "Heeft u een pacemaker of ingeplante hartdefibrillator?",
+    fr: "Avez-vous un pacemaker ou un défibrillateur cardiaque implanté ?",
+    en: "Do you have a pacemaker or implanted cardiac defibrillator?"
+  },
+  q2: {
+    nl: "Heeft u een neurostimulator, pijnpomp of insulinepomp?",
+    fr: "Avez-vous un neurostimulateur, une pompe à douleur ou une pompe à insuline ?",
+    en: "Do you have a neurostimulator, pain pump or insulin pump?"
+  },
+  q3: {
+    nl: "Heeft u een binnenoorimplantaat of cochleair implantaat?",
+    fr: "Avez-vous un implant cochléaire ou un implant de l’oreille interne ?",
+    en: "Do you have a cochlear or inner ear implant?"
+  },
+  q4: {
+    nl: "Heeft u een metalen fragment (bv. metaalsplinter) in uw oog?",
+    fr: "Avez-vous un fragment métallique (ex. éclat de métal) dans l’œil ?",
+    en: "Do you have a metal fragment (e.g. metal splinter) in your eye?"
+  },
+  q5: {
+    nl: "Heeft u een hoorapparaat?",
+    fr: "Portez-vous un appareil auditif ?",
+    en: "Do you wear a hearing aid?"
+  },
+  q6: {
+    nl: "Heeft u ooit een rugoperatie ondergaan?",
+    fr: "Avez-vous déjà subi une operatie van de rug?",
+    en: "Have you ever had back surgery?"
+  }
 };
 
-document.querySelectorAll("#options button").forEach(b=>{
-  b.onclick = ()=> addElement(b.dataset.type);
-});
+/* ===== UI TEKST ===== */
+const UI = {
+  nl: {
+    title: "MRI vragenlijst",
+    first: "Voornaam",
+    last: "Naam",
+    submit: "Verzenden",
+    consent:
+      "Ik verklaar dat ik deze vragenlijst zelf en naar waarheid heb ingevuld en ga akkoord met het gebruik van deze gegevens voor medische doeleinden.",
+    yes: "Ja",
+    no: "Nee",
+    lang: "Taal"
+  },
+  fr: {
+    title: "Questionnaire IRM",
+    first: "Prénom",
+    last: "Nom",
+    submit: "Envoyer",
+    consent:
+      "Je déclare avoir rempli ce questionnaire personnellement et honnêtement et j’accepte l’utilisation de ces données à des fins médicales.",
+    yes: "Oui",
+    no: "Non",
+    lang: "Langue"
+  },
+  en: {
+    title: "MRI questionnaire",
+    first: "First name",
+    last: "Last name",
+    submit: "Submit",
+    consent:
+      "I declare that I have completed this questionnaire personally and truthfully and agree to the use of this data for medical purposes.",
+    yes: "Yes",
+    no: "No",
+    lang: "Language"
+  }
+};
 
-function addElement(type){
-  counters[type]++;
-  const el = document.createElement("div");
-  el.className="element";
-  el.innerHTML=`
-    <div class="element-header">
-      <strong>${type} ${counters[type]}</strong>
-      <button class="remove-element">
-        <svg viewBox="0 0 24 24">
-          <path d="M3 6h18v2H5l1 14h12l1-14H3zm5 4h2v8H8zm6 0h2v8h-2z"/>
-        </svg>
-      </button>
-    </div>
+const form = document.getElementById("mriForm");
+const questionsDiv = document.getElementById("questions");
+const submitBtn = document.getElementById("submitBtn");
 
-    <label>Breedte (cm)</label>
-    <input type="number">
-    <label>Hoogte (cm)</label>
-    <input type="number">
+/* ===== RENDER ===== */
+function render(lang) {
+  const t = UI[lang];
+  document.documentElement.lang = lang;
 
-    <div class="photo-box">
-      <div class="camera-btn">📷</div>
-      <input type="file" accept="image/*" capture="environment" hidden>
-      <div class="photos"></div>
-    </div>
-  `;
-  container.appendChild(el);
-  el.scrollIntoView({behavior:"smooth"});
+  document.getElementById("title").innerText = t.title;
+  document.getElementById("labelFirst").innerText = t.first;
+  document.getElementById("labelLast").innerText = t.last;
+  document.getElementById("submitBtn").innerText = t.submit;
+  document.getElementById("consentText").innerText = t.consent;
+  document.getElementById("labelLang").innerText = t.lang;
 
-  el.querySelector(".remove-element").onclick=()=>{
-    el.remove(); autosave();
-  };
+  questionsDiv.innerHTML = "";
 
-  el.querySelectorAll("input").forEach(i=> i.oninput=autosave);
+  for (const key in QUESTIONS) {
+    const nlQuestion = QUESTIONS[key].nl;
+    const shownQuestion = QUESTIONS[key][lang];
 
-  const cam=el.querySelector(".camera-btn");
-  const file=el.querySelector("input[type=file]");
-  const photos=el.querySelector(".photos");
-
-  cam.onclick=()=>file.click();
-  file.onchange=()=>{
-    const r=new FileReader();
-    r.onload=e=>{
-      const img=new Image();
-      img.onload=()=>{
-        const c=document.createElement("canvas");
-        const s=Math.min(800/img.width,1);
-        c.width=img.width*s; c.height=img.height*s;
-        c.getContext("2d").drawImage(img,0,0,c.width,c.height);
-
-        const wrap=document.createElement("div");
-        wrap.className="photo-wrapper";
-        wrap.innerHTML=`
-          <img src="${c.toDataURL("image/jpeg",0.6)}">
-          <button class="remove-photo">✖</button>
-        `;
-        wrap.querySelector("button").onclick=()=>{wrap.remove(); autosave();}
-        photos.appendChild(wrap);
-        autosave();
-      };
-      img.src=e.target.result;
-    };
-    r.readAsDataURL(file.files[0]);
-  };
-  autosave();
-}
-
-function autosave(){
-  const data={klant:clientName.value, datum:projectDate.value, elementen:[]};
-  document.querySelectorAll(".element").forEach(el=>{
-    data.elementen.push({
-      titel:el.querySelector("strong").innerText,
-      b:el.querySelectorAll("input")[0].value,
-      h:el.querySelectorAll("input")[1].value,
-      fotos:[...el.querySelectorAll("img")].map(i=>i.src)
-    });
-  });
-  localStorage.setItem("autosave",JSON.stringify(data));
-}
-
-(function restore(){
-  const s=localStorage.getItem("autosave");
-  if(!s) return;
-  const d=JSON.parse(s);
-  clientName.value=d.klant;
-  projectDate.value=d.datum;
-  d.elementen.forEach(e=>{
-    addElement(e.titel.split(" ")[0]);
-    const el=container.lastChild;
-    el.querySelectorAll("input")[0].value=e.b;
-    el.querySelectorAll("input")[1].value=e.h;
-    const p=el.querySelector(".photos");
-    e.fotos.forEach(src=>{
-      const w=document.createElement("div");
-      w.className="photo-wrapper";
-      w.innerHTML=`<img src="${src}"><button class="remove-photo">✖</button>`;
-      w.querySelector("button").onclick=()=>{w.remove(); autosave();}
-      p.appendChild(w);
-    });
-  });
-})();
-
-function newProject(){
-  if(confirm("Nieuw project starten?")){
-    localStorage.removeItem("autosave");
-    location.reload();
+    questionsDiv.innerHTML += `
+      <div class="question">${shownQuestion}</div>
+      <div class="options">
+        <label><input type="radio" name="${nlQuestion}" value="${t.yes}" required> ${t.yes}</label>
+        <label><input type="radio" name="${nlQuestion}" value="${t.no}"> ${t.no}</label>
+      </div>`;
   }
 }
 
-function exportPDF(){
-  const {jsPDF}=window.jspdf;
-  const pdf=new jsPDF();
-  let y=10;
-  pdf.text("Opmeetrapport",10,y); y+=10;
-  document.querySelectorAll(".element").forEach(el=>{
-    pdf.text(el.querySelector("strong").innerText,10,y); y+=6;
-    [...el.querySelectorAll("img")].forEach(img=>{
-      pdf.addImage(img.src,"JPEG",10,y,50,35); y+=40;
-    });
-  });
-  pdf.save("opmeting.pdf");
+/* ===== TAALKEUZE ===== */
+document.getElementById("language").addEventListener("change", e => {
+  render(e.target.value);
+  checkComplete();
+});
+
+/* ===== VALIDATIE ===== */
+function checkComplete() {
+  const radios = form.querySelectorAll("input[type=radio]");
+  const checkbox = form.querySelector("input[type=checkbox]");
+  const groups = {};
+
+  radios.forEach(r => groups[r.name] = false);
+  radios.forEach(r => { if (r.checked) groups[r.name] = true; });
+
+  if (Object.values(groups).every(Boolean) && checkbox.checked) {
+    submitBtn.disabled = false;
+    submitBtn.classList.add("enabled");
+  } else {
+    submitBtn.disabled = true;
+    submitBtn.classList.remove("enabled");
+  }
 }
+
+form.addEventListener("change", checkComplete);
+
+/* ===== SUBMIT ===== */
+form.addEventListener("submit", () => {
+  const radios = form.querySelectorAll("input[type=radio]");
+
+  radios.forEach(r => {
+    if (r.checked) {
+      const v = r.value.toLowerCase();
+      r.value = (v === "yes" || v === "oui" || v === "ja") ? "JA" : "Nee";
+    }
+  });
+
+  const first = form.elements["Voornaam"].value;
+  const last = form.elements["Naam"].value;
+  document.getElementById("subject").value =
+    "MRI vragenlijst – " + first + " " + last;
+});
+
+/* INIT */
+render("nl");
 </script>
 
 </body>
 </html>
+
